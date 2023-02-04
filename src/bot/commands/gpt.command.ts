@@ -46,8 +46,7 @@ composer.command('variation', async (ctx) => {
   if (!ctx.message?.reply_to_message?.photo) return
 
   try {
-    // get file id from reply
-    const file_id = ctx.message?.reply_to_message?.photo?.[3]?.file_id
+    const file_id = ctx.message?.reply_to_message?.photo?.pop()?.file_id
     if (!file_id) return
 
     // get file path from file id
@@ -78,7 +77,6 @@ composer.command('variation', async (ctx) => {
       }
     )
   } catch (e) {
-    console.log(e)
     Logger.error(e, 'VARIATION')
     return ctx.reply('Desculpa! 🥺 Não vai rolar.', {
       reply_to_message_id: ctx.message?.message_id,

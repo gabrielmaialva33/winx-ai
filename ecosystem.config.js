@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'winx',
-      command: 'npm run start:build',
+      command: 'npm run build && npm run start',
       restart: true,
     },
   ],

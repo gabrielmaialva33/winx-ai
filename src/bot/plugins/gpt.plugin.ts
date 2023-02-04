@@ -34,8 +34,9 @@ class OpenAI extends OpenAIApi {
         prompt: StringUtils.remove_breaklines(main + text + `Winx(${username}): |`),
         max_tokens: 1000,
         temperature: 0.9,
-        top_p: 1,
         stop: ['|'],
+        presence_penalty: 0.5,
+        frequency_penalty: 0.5,
       })
     }
 

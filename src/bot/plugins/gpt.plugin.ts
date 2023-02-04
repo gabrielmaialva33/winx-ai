@@ -50,17 +50,12 @@ class OpenAI extends OpenAIApi {
 
   public async imagine(text: string, n?: number) {
     Logger.info(`Imagining text: ${text}`, 'IA')
-
-    try {
-      return this.createImage({
-        prompt: text,
-        n: n || 1,
-        size: '512x512',
-        response_format: 'url',
-      })
-    } catch (error) {
-      Logger.error(error, 'IA.imagine')
-    }
+    return this.createImage({
+      prompt: text,
+      n: n || 1,
+      size: '512x512',
+      response_format: 'url',
+    })
   }
 }
 

@@ -1,6 +1,5 @@
 import * as process from 'process'
 import * as fs from 'fs'
-import * as child_process from 'child_process'
 
 import { User } from '@/main'
 import { ContextArgs } from '@/helpers/context.utils'
@@ -36,7 +35,7 @@ export const HistoryUtils = {
 
   reset_history: () => {
     const isExists = fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')
-    if (isExists) child_process.execSync('rm -rf ' + process.cwd() + '/tmp/history.gpt.txt')
+    if (isExists) fs.unlinkSync(process.cwd() + '/tmp/history.gpt.txt')
   },
 
   populate_history: async () =>

@@ -70,8 +70,7 @@ class OpenAI extends OpenAIApi {
     // redimension the image
     const image = await jimp.read(`${path}.png`)
     await image.resize(512, 512).writeAsync(`${path}.png`)
-
-    Logger.info(`Variating image: ${path}`, 'IA')
+    Logger.info(`Variating image: ${path}.png`, 'IA')
     return this.createImageVariation(fs.createReadStream(`${path}.png`) as any, 1, '512x512', 'url')
   }
 }

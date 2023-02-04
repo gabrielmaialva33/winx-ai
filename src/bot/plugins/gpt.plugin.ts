@@ -43,7 +43,7 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion({
       model: 'text-davinci-003',
       prompt,
-      max_tokens: 1000,
+      max_tokens: 500,
       temperature: 0.9,
       top_p: 1,
       stop: ['|'],

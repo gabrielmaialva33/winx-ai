@@ -1,3 +1,5 @@
+import env from '@/env'
+
 import { Bot as BotGrammy } from 'grammy'
 import { parseMode } from '@grammyjs/parse-mode'
 
@@ -10,13 +12,14 @@ import { history } from '@/bot/middlewares/history.middleware'
 import { group } from '@/bot/middlewares/group.middleware'
 
 export class Bot extends BotGrammy {
-  constructor(token: string) {
-    super(token, {
+  constructor() {
+    super(env.BOT_TOKEN, {
       client: { canUseWebhookReply: () => false },
     })
     this.api.config.use(parseMode('HTML'))
 
     this.use(Commands)
+
     this.on('message', group)
     this.on('message:text', history, gpt)
 
@@ -42,3 +45,5 @@ export class Bot extends BotGrammy {
     ])
   }
 }
+
+export const Winx = new Bot()

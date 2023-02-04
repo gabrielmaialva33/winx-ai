@@ -30,6 +30,15 @@ export class Bot extends BotGrammy {
       onStart: async () => Logger.info('Bot is running!', 'BOT'),
     })
 
-    await super.api.setMyCommands([{ command: 'start', description: 'Iniciar o bot' }])
+    await super.api.setMyCommands([
+      {
+        command: 'start',
+        description: 'Iniciar o bot',
+      },
+      {
+        command: 'imagine',
+        description: 'Gerar imagem com texto',
+      },
+    ])
   }
 }

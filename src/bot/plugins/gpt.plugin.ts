@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import jimp from 'jimp'
 
 import { Configuration, OpenAIApi } from 'openai'
 import { Logger } from '@/logger'
@@ -31,7 +32,7 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt: StringUtils.remove_breaklines(main + text + `Winx(${username}): |`),
-        max_tokens: 500,
+        max_tokens: 1000,
         temperature: 0.9,
         top_p: 1,
         stop: ['|'],
@@ -41,7 +42,7 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion({
       model: 'text-davinci-003',
       prompt,
-      max_tokens: 500,
+      max_tokens: 1000,
       temperature: 0.9,
       top_p: 1,
       stop: ['|'],
@@ -56,6 +57,17 @@ class OpenAI extends OpenAIApi {
       size: '512x512',
       response_format: 'url',
     })
+  }
+
+  public async variation(path: string) {
+    // change the file extension to png
+    const file = await fs.readFileSync(path)
+    await jimp.read(file).then((image) => image.writeAsync(`${path}.png`))
+
+    //const png = fs.readFileSync(`${path}.png`)
+
+    // @ts-ignore
+    return this.createImageVariation(fs.readFileSync(`${path}.png`), 1, '512x512', 'url')
   }
 }
 

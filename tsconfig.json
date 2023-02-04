@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "module": "commonjs",

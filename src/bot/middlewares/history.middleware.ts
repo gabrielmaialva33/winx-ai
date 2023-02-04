@@ -15,7 +15,7 @@ export const history: MiddlewareFn = async (ctx, next) => {
       ctx.message.from.is_bot ||
       ctx.message.reply_to_message?.from?.is_bot ||
       !ctx.message.from?.first_name ||
-      StringUtils.text_includes(ctx.message!.text!, ['winx'])
+      StringUtils.text_includes(ctx.message!.text!, ['winx', '/'])
     ) {
       Logger.debug('Ignoring message', 'MIDDLEWARE/HISTORY')
       return next()

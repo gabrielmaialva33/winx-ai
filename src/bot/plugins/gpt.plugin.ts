@@ -30,14 +30,16 @@ class OpenAI extends OpenAIApi {
 
       await HistoryUtils.populate_history()
 
+      // text-curie-001
       return this.createCompletion({
         model: 'text-davinci-003',
-        prompt: StringUtils.remove_breaklines(main + text + `Winx(${username}): |`),
-        max_tokens: 1000,
-        temperature: 0.9,
-        stop: ['|'],
-        presence_penalty: 0.5,
+        prompt: prompt,
+        temperature: 0.5,
+        max_tokens: 500,
+        top_p: 0.3,
         frequency_penalty: 0.5,
+        presence_penalty: 0.0,
+        stop: ['|'],
       })
     }
 
@@ -65,10 +67,12 @@ class OpenAI extends OpenAIApi {
     const file = await fs.readFileSync(path)
     await jimp.read(file).then((image) => image.writeAsync(`${path}.png`))
 
-    //const png = fs.readFileSync(`${path}.png`)
+    // redimension the image
+    const image = await jimp.read(`${path}.png`)
+    await image.resize(512, 512).writeAsync(`${path}.png`)
 
-    // @ts-ignore
-    return this.createImageVariation(fs.readFileSync(`${path}.png`), 1, '512x512', 'url')
+    Logger.info(`Variating image: ${path}`, 'IA')
+    return this.createImageVariation(fs.createReadStream(`${path}.png`) as any, 1, '512x512', 'url')
   }
 }
 

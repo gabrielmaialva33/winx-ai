@@ -47,7 +47,7 @@ composer.command('variation', async (ctx) => {
 
   try {
     // get file id from reply
-    const file_id = ctx.message?.reply_to_message?.photo?.[0]?.file_id
+    const file_id = ctx.message?.reply_to_message?.photo?.[3]?.file_id
     if (!file_id) return
 
     // get file path from file id

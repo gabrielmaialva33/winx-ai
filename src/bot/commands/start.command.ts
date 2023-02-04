@@ -11,9 +11,9 @@ composer.use(StartMarkup)
 
 composer.command('start', async (ctx) => {
   if (!ctx.chat?.id) return ctx.reply('❌ Erro ao iniciar o bot!')
+  if (ctx.chat.type === 'supergroup') return
 
   Logger.debug(`Bot has been started by: ${ContextUtils.get_username(ctx)}`, 'START')
-
   await ctx.api.sendChatAction(ctx.chat.id, 'typing')
 
   const file = new InputFile(process.cwd() + '/src/assets/winx.gif')

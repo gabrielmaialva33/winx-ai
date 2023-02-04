@@ -4,7 +4,8 @@ coverage
 .vscode
 .DS_STORE
 .env
-tmp
+!tmp/.gitkeep
+tmp/history.gpt.txt
+tmp/main.gpt.txt
 .idea/
 dist
-!tmp/.gitkeep

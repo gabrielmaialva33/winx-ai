@@ -33,9 +33,11 @@ class OpenAI extends OpenAIApi {
       // text-curie-001
       return this.createCompletion({
         model: 'text-davinci-003',
-        prompt: prompt,
+        prompt,
         max_tokens: 500,
         temperature: 0.9,
+        frequency_penalty: 0.5,
+        presence_penalty: 0.5,
         stop: ['|'],
       })
     }
@@ -45,6 +47,8 @@ class OpenAI extends OpenAIApi {
       prompt,
       max_tokens: 500,
       temperature: 0.9,
+      frequency_penalty: 0.5,
+      presence_penalty: 0.5,
       stop: ['|'],
     })
   }

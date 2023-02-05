@@ -1,16 +1,17 @@
 <h1 align="center">
   <br>
-  <img src="https://raw.githubusercontent.com/gabrielmaialva33/winx-ai/master/.github/assets/magic-wand.png" alt="Winx IA" width="200">
+  <img src="https://raw.githubusercontent.com/gabrielmaialva33/winx-ai/master/.github/assets/fairy.png" alt="Winx IA" width="200">
   <br>
-  An OpenAI bot for <a href="https://web.telegram.org/">Telegram</a>
+  OpenAI bot for <a href="https://web.telegram.org/">Telegram</a>
   <br>
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/gabrielmaialva33/winx-ai?color=00b8d3?style=flat&logo=appveyor" alt="License" />
+  <img src="https://wakatime.com/badge/user/e61842d0-c588-4586-96a3-f0448a434be4/project/30a1c561-2429-4ca9-813a-3f081cb9b391.svg" alt="wakatime">
   <img src="https://img.shields.io/github/languages/top/gabrielmaialva33/winx-ai?style=flat&logo=appveyor" alt="GitHub top language" >
   <img src="https://img.shields.io/github/languages/count/gabrielmaialva33/winx-ai?style=flat&logo=appveyor" alt="GitHub language count" >
   <img src="https://img.shields.io/github/repo-size/gabrielmaialva33/winx-ai?style=flat&logo=appveyor" alt="Repository size" >
+  <img src="https://img.shields.io/github/license/gabrielmaialva33/winx-ai?color=00b8d3?style=flat&logo=appveyor" alt="License" /> 
   <a href="https://github.com/gabrielmaialva33/winx-ai/commits/master">
     <img src="https://img.shields.io/github/last-commit/gabrielmaialva33/winx-ai?style=flat&logo=appveyor" alt="GitHub last commit" >
     <img src="https://img.shields.io/badge/made%20by-Maia-15c3d6?style=flat&logo=appveyor" alt="Maia" >  

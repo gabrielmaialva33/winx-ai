@@ -40,7 +40,6 @@
 - **[GrammY](https://grammy.dev/)**
 - **[OpenAI](https://openai.com/)**
 
-
 ## :package: Installation
 
 ```bash
@@ -59,8 +58,9 @@ yarn start:dev # or pm2 start ecosystem.config.js
 ### :wrench: **Configuration**
 
 open the .env file and fill in the fields
+
 ```env
-# Telegram 
+# Telegram
 API_ID=123456 # Your API ID
 API_HASH=123456 # Your API HASH
 
@@ -87,10 +87,9 @@ OPENAI_TOKEN=sk-1234567890... # Your OpenAI token
 ### :writing_hand: **Author**
 
 | [![Maia](https://avatars.githubusercontent.com/u/26732067?size=100)](https://github.com/demartini) |
-| -------------------------------------------------------------------------------------------------------- |
+| -------------------------------------------------------------------------------------------------- |
 | [Maia](https://github.com/gabrielmaialva33)                                                        |
 
 ## License
 
 [MIT License](./LICENSE)
-

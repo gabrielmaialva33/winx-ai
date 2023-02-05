@@ -34,10 +34,8 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt: prompt,
+        max_tokens: 500,
         temperature: 0.9,
-        max_tokens: 600,
-        frequency_penalty: 0.5,
-        presence_penalty: 0.0,
         stop: ['|'],
       })
     }
@@ -69,7 +67,9 @@ class OpenAI extends OpenAIApi {
     // redimension the image
     const image = await jimp.read(`${path}.png`)
     await image.resize(512, 512).writeAsync(`${path}.png`)
+
     Logger.info(`Variating image: ${path}.png`, 'IA')
+
     return this.createImageVariation(fs.createReadStream(`${path}.png`) as any, 1, '512x512', 'url')
   }
 }

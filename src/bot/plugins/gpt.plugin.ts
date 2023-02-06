@@ -22,7 +22,6 @@ class OpenAI extends OpenAIApi {
       'IA/COMPLETE'
     )
     const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}): |`)
-    //Logger.info(`PROMPT: ${prompt}`, 'IA/COMPLETE')
     Logger.info(`TOKENS: ${JSON.stringify(StringUtils.count_tokens(prompt))}`, 'IA/COMPLETE')
 
     if (StringUtils.count_tokens(prompt) > 4000) {
@@ -34,10 +33,10 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt,
-        max_tokens: 500,
-        temperature: 0.9,
-        frequency_penalty: 1,
-        presence_penalty: -2.0,
+        max_tokens: 400,
+        temperature: 0.7,
+        frequency_penalty: 0.5,
+        presence_penalty: -0.5,
         stop: ['|'],
       })
     }
@@ -45,10 +44,10 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion({
       model: 'text-davinci-003',
       prompt,
-      max_tokens: 500,
-      temperature: 0.9,
-      frequency_penalty: 1,
-      presence_penalty: -2.0,
+      max_tokens: 400,
+      temperature: 0.7,
+      frequency_penalty: 0.5,
+      presence_penalty: -0.5,
       stop: ['|'],
     })
   }

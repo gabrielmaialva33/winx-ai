@@ -1,10 +1,10 @@
 import * as fs from 'fs'
 import jimp from 'jimp'
+import env from '@/env'
 
 import { Configuration, OpenAIApi } from 'openai'
 import { Logger } from '@/logger'
 
-import env from '@/env'
 import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
 
@@ -34,9 +34,10 @@ class OpenAI extends OpenAIApi {
         model: 'text-davinci-003',
         prompt,
         max_tokens: 400,
-        temperature: 0.7,
-        frequency_penalty: 0.5,
-        presence_penalty: -0.5,
+        temperature: 1,
+        top_p: 0.3,
+        frequency_penalty: 2,
+        presence_penalty: 2,
         stop: ['|'],
       })
     }
@@ -45,9 +46,10 @@ class OpenAI extends OpenAIApi {
       model: 'text-davinci-003',
       prompt,
       max_tokens: 400,
-      temperature: 0.7,
-      frequency_penalty: 0.5,
-      presence_penalty: -0.5,
+      temperature: 1,
+      top_p: 0.3,
+      frequency_penalty: 2,
+      presence_penalty: 2,
       stop: ['|'],
     })
   }

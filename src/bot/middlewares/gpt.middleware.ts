@@ -14,14 +14,18 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     const text = ContextUtils.get_text(ctx)
     if (!text) return next()
 
+    const { username, reply_to_username, reply_to_text } = ContextUtils.get_context(ctx)
+
     if (
       StringUtils.text_includes(text, ['winx']) &&
-      !StringUtils.text_includes(text, ['/imagine'])
+      !StringUtils.text_includes(text, ['/imagine', '/variation'])
     ) {
-      const { username, reply_to_username, reply_to_text } = ContextUtils.get_context(ctx)
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {
+        message_thread_id: ctx.message.message_id,
+      })
+
       const response = await IA.complete(input, username)
       if (!response.data.choices[0].text) return next()
 
@@ -35,10 +39,12 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
-      const { username, reply_to_username, reply_to_text } = ContextUtils.get_context(ctx)
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {
+        message_thread_id: ctx.message.message_id,
+      })
+
       const response = await IA.complete(input, username)
       if (!response.data.choices[0].text) return next()
 

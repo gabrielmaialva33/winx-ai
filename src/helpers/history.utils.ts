@@ -4,6 +4,7 @@ import * as fs from 'fs'
 import { User } from '@/main'
 import { ContextArgs } from '@/helpers/context.utils'
 import { Logger } from '@/logger'
+import { StringUtils } from '@/helpers/string.utils'
 
 export const HistoryUtils = {
   build_gpt_history: (input: string, output: string, reply_username: string) => {
@@ -27,10 +28,12 @@ export const HistoryUtils = {
   },
 
   slice_lines: (n: number) => {
-    const history_file = process.cwd() + '/tmp/history.gpt.txt'
-    if (!fs.existsSync(history_file)) return
-    const lines = fs.readFileSync(history_file, 'utf8').split('\n')
-    fs.writeFileSync(history_file, lines.slice(n).join('\n'))
+    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
+    if (!fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')) return
+    const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
+    if (StringUtils.count_tokens((main + history) as string) < 2000) return
+    const lines = fs.readFileSync(history, 'utf8').split('\n')
+    fs.writeFileSync(history, lines.slice(n).join('\n'))
   },
 
   reset_history: () => {

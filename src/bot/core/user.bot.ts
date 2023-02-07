@@ -10,17 +10,26 @@ import { HistoryUtils } from '@/helpers/history.utils'
 export class UserBot {
   public user_1: TelegramClient
   public user_2: TelegramClient
+  public user_3: TelegramClient
 
   constructor() {
+    // 𝕄𝕒𝕙𝕚𝕟𝕒
     this.user_1 = new TelegramClient(
       new StringSession(env.STRING_SESSION_1),
       env.API_ID,
       env.API_HASH,
       { connectionRetries: 5 }
     )
-
+    // ｓｅｎｓｉｔｉｖｅ 不同
     this.user_2 = new TelegramClient(
       new StringSession(env.STRING_SESSION_2),
+      env.API_ID,
+      env.API_HASH,
+      { connectionRetries: 5 }
+    )
+    // Winx
+    this.user_3 = new TelegramClient(
+      new StringSession(env.STRING_SESSION_3),
       env.API_ID,
       env.API_HASH,
       { connectionRetries: 5 }
@@ -30,11 +39,19 @@ export class UserBot {
   public async start() {
     await this.user_1
       .start({ botAuthToken: env.BOT_TOKEN })
-      .then(() => Logger.info('UserBot1 started', 'USERBOT'))
+      .then(() => Logger.info('UserBot1 started', 'USERBOT_1'))
 
     await this.user_2
       .start({ botAuthToken: env.BOT_TOKEN })
-      .then(() => Logger.info('UserBot2 started', 'USERBOT'))
+      .then(() => Logger.info('UserBot2 started', 'USERBOT_2'))
+
+    await this.user_3
+      .start({ botAuthToken: env.BOT_TOKEN })
+      .then(() => Logger.info('UserBot3 started', 'USERBOT_3'))
+
+    await this.user_1.getDialogs()
+    await this.user_2.getDialogs()
+    await this.user_3.getDialogs()
   }
 
   public async getHistory() {
@@ -44,7 +61,7 @@ export class UserBot {
     const chatMessages = await this.user_2.getMessages(group[0], {
       filter: new Api.InputMessagesFilterEmpty(),
       reverse: false,
-      limit: 200,
+      limit: 10,
     })
     const messages = chatMessages.reverse()
     let context = ''
@@ -92,5 +109,29 @@ export class UserBot {
     HistoryUtils.write_history(context)
 
     return context
+  }
+
+  public async sendMessage1(chat_id: number, text: string, reply_to?: number) {
+    await this.user_1.getParticipants(chat_id)
+    await this.user_1.sendMessage(chat_id, {
+      message: text,
+      replyTo: reply_to,
+    })
+  }
+
+  public async sendMessage2(chat_id: number, text: string, reply_to?: number) {
+    await this.user_2.getParticipants(chat_id)
+    await this.user_2.sendMessage(chat_id, {
+      message: text,
+      replyTo: reply_to,
+    })
+  }
+
+  public async sendMessage3(chat_id: number, text: string, reply_to?: number) {
+    await this.user_3.getParticipants(chat_id)
+    await this.user_3.sendMessage(chat_id, {
+      message: text,
+      replyTo: reply_to,
+    })
   }
 }

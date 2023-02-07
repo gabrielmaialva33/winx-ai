@@ -34,10 +34,7 @@ class OpenAI extends OpenAIApi {
         model: 'text-davinci-003',
         prompt,
         temperature: 0.6,
-        max_tokens: 400,
-        top_p: 0.2,
         frequency_penalty: 0.5,
-        presence_penalty: 0,
         stop: ['|'],
       })
     }
@@ -47,9 +44,6 @@ class OpenAI extends OpenAIApi {
       prompt,
       temperature: 0.6,
       max_tokens: 400,
-      top_p: 0.2,
-      frequency_penalty: 0.5,
-      presence_penalty: 0,
       stop: ['|'],
     })
   }

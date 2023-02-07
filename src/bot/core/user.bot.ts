@@ -44,7 +44,7 @@ export class UserBot {
     const chatMessages = await this.user_2.getMessages(group[0], {
       filter: new Api.InputMessagesFilterEmpty(),
       reverse: false,
-      limit: 150,
+      limit: 200,
     })
     const messages = chatMessages.reverse()
     let context = ''

@@ -12,7 +12,7 @@ export class UserBot {
 
   constructor() {
     this.user = new TelegramClient(
-      new StringSession(env.STRING_SESSION_1),
+      new StringSession(env.STRING_SESSION),
       env.API_ID,
       env.API_HASH,
       { connectionRetries: 5 }
@@ -33,7 +33,7 @@ export class UserBot {
     const chatMessages = await this.user.getMessages(group[0], {
       filter: new Api.InputMessagesFilterEmpty(),
       reverse: false,
-      limit: 150,
+      limit: 10,
     })
     const messages = chatMessages.reverse()
     let context = ''
@@ -84,9 +84,21 @@ export class UserBot {
   }
 
   public async sendMessage(chatId: number, text: string, reply_to?: number) {
-    await this.user.sendMessage(chatId, {
-      message: text,
-      replyTo: reply_to,
-    })
+    return this.user
+      .invoke(
+        new Api.messages.SetTyping({
+          action: new Api.SendMessageTypingAction(),
+          peer: chatId,
+        })
+      )
+      .then(async () =>
+        this.user.invoke(
+          new Api.messages.SendMessage({
+            peer: chatId,
+            replyToMsgId: reply_to,
+            message: text,
+          })
+        )
+      )
   }
 }

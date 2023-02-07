@@ -24,7 +24,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     ) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+      //await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
       const response = await IA.complete(input, username)
       if (!response.data.choices[0].text) return next()
@@ -33,7 +33,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       const history = HistoryUtils.build_gpt_history(input, output, username)
       HistoryUtils.write_history(history)
 
-      await User.sendMessage3(
+      await User.sendMessage(
         ctx.chat.id,
         response.data.choices[0].text + '\n',
         ctx.message.message_id
@@ -50,7 +50,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     if (ctx.message.reply_to_message?.from?.id === 5635583594) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+      //await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
       const response = await IA.complete(input, username)
       if (!response.data.choices[0].text) return next()
@@ -62,7 +62,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       // return ctx.reply(response.data.choices[0].text + '\n', {
       //   reply_to_message_id: ctx.message.message_id,
       // })
-      await User.sendMessage3(
+      await User.sendMessage(
         ctx.chat.id,
         response.data.choices[0].text + '\n',
         ctx.message.message_id

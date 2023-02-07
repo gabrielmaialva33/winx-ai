@@ -45,7 +45,8 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // ctx.message.reply_to_message?.from?.id === ctx.me.id
-    if (ctx.message.reply_to_message?.from?.id === 5635583594) {
+    // ctx.message.reply_to_message?.from?.id === 5635583594
+    if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
       await ctx.api.sendChatAction(ctx.chat!.id, 'typing')

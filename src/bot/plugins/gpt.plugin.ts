@@ -34,7 +34,7 @@ class OpenAI extends OpenAIApi {
         model: 'text-davinci-003',
         prompt,
         temperature: 0.9,
-        max_tokens: 400,
+        max_tokens: 800,
         frequency_penalty: 0.2,
         presence_penalty: 0.2,
         stop: ['|'],

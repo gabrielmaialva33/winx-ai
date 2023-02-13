@@ -18,8 +18,8 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
 
     if (
       StringUtils.text_includes(text, ['winx']) &&
-      !StringUtils.text_includes(text, ['/imagine', '/variation']) &&
-      !ctx.message.reply_to_message
+      !StringUtils.text_includes(text, ['/imagine', '/variation'])
+      //&& !ctx.message.reply_to_message
     ) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 

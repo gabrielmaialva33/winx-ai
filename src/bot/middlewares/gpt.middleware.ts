@@ -66,7 +66,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       if (!response.data.choices[0].text) return next()
 
       const output = response.data.choices[0].text
-      const history = HistoryUtils.build_gpt_history(input, output, username)
+      const history = HistoryUtils.build_reply_gpt_history(input, output, username)
       HistoryUtils.write_history(history)
 
       return ctx.reply(response.data.choices[0].text + '\n', {

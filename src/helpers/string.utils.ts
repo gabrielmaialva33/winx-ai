@@ -17,6 +17,7 @@ export const StringUtils = {
           : ''
       )
       .replace(/[^a-zA-Z0-9 ]/g, '')
+      .slice(0, 30)
       .trim()
 
     // check if username is empty

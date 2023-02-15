@@ -69,8 +69,7 @@ BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11 # Your bot token
 GROUP_ID=-123456789, 123456789 # Your group ids allowed to use the bot (separated by commas)
 
 # Sessions
-STRING_SESSION_1=1AZ... # Your session 1
-STRING_SESSION_2=2AZ... # Your session 2
+STRING_SESSION=1AZ... # Your session 1
 
 # OpenIA
 OPENAI_TOKEN=sk-1234567890... # Your OpenAI token

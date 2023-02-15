@@ -1,10 +1,10 @@
 import * as fs from 'fs'
 import jimp from 'jimp'
+import env from '@/env'
 
 import { Configuration, OpenAIApi } from 'openai'
 import { Logger } from '@/logger'
 
-import env from '@/env'
 import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
 
@@ -22,7 +22,6 @@ class OpenAI extends OpenAIApi {
       'IA/COMPLETE'
     )
     const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}): |`)
-    //Logger.info(`PROMPT: ${prompt}`, 'IA/COMPLETE')
     Logger.info(`TOKENS: ${JSON.stringify(StringUtils.count_tokens(prompt))}`, 'IA/COMPLETE')
 
     if (StringUtils.count_tokens(prompt) > 4000) {
@@ -34,10 +33,10 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt,
-        max_tokens: 400,
-        temperature: 0.5,
-        frequency_penalty: 0.5,
-        presence_penalty: 0.5,
+        temperature: 0.9,
+        max_tokens: 800,
+        frequency_penalty: 2,
+        presence_penalty: 2,
         stop: ['|'],
       })
     }
@@ -45,10 +44,8 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion({
       model: 'text-davinci-003',
       prompt,
+      temperature: 0.9,
       max_tokens: 400,
-      temperature: 0.5,
-      frequency_penalty: 0.5,
-      presence_penalty: 0.5,
       stop: ['|'],
     })
   }

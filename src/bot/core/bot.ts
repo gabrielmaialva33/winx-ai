@@ -33,22 +33,22 @@ export class Bot extends BotGrammy<MyContext> {
   }
 
   public async start() {
+    await this.api.setMyCommands([
+      {
+        command: 'imagine',
+        description: 'Gerar imagem com texto',
+      },
+      {
+        command: 'variation',
+        description: 'Gerar variação de imagem',
+      },
+    ])
+
     await super.start({
       drop_pending_updates: true,
       allowed_updates: ['message', 'callback_query'],
       onStart: async () => Logger.info('Bot is running!', 'BOT'),
     })
-
-    await super.api.setMyCommands([
-      {
-        command: 'start',
-        description: 'Iniciar o bot',
-      },
-      {
-        command: 'imagine',
-        description: 'Gerar imagem com texto',
-      },
-    ])
   }
 }
 

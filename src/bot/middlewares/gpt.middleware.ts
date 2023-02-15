@@ -19,12 +19,11 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     if (
       StringUtils.text_includes(text, ['winx']) &&
       !StringUtils.text_includes(text, ['/imagine', '/variation'])
+      //&& !ctx.message.reply_to_message
     ) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {
-        message_thread_id: ctx.message.message_id,
-      })
+      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
       const response = await IA.complete(input, username)
       if (!response.data.choices[0].text) return next()
@@ -36,14 +35,21 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       return ctx.reply(response.data.choices[0].text + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
+      // await User.sendMessage(
+      //   ctx.chat.id,
+      //   response.data.choices[0].text + '\n',
+      //   ctx.message.message_id
+      // )
+
+      // return next()
     }
 
+    // ctx.message.reply_to_message?.from?.id === ctx.me.id
+    // ctx.message.reply_to_message?.from?.id === 5635583594
     if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {
-        message_thread_id: ctx.message.message_id,
-      })
+      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
       const response = await IA.complete(input, username)
       if (!response.data.choices[0].text) return next()
@@ -55,6 +61,14 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       return ctx.reply(response.data.choices[0].text + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
+
+      // await User.sendMessage(
+      //   ctx.chat.id,
+      //   response.data.choices[0].text + '\n',
+      //   ctx.message.message_id
+      // )
+
+      // return next()
     }
   } catch (error) {
     Logger.error(error, 'MIDDLEWARE/GPT')

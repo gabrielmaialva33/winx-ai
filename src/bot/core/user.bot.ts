@@ -8,19 +8,11 @@ import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
 
 export class UserBot {
-  public user_1: TelegramClient
-  public user_2: TelegramClient
+  public user: TelegramClient
 
   constructor() {
-    this.user_1 = new TelegramClient(
-      new StringSession(env.STRING_SESSION_1),
-      env.API_ID,
-      env.API_HASH,
-      { connectionRetries: 5 }
-    )
-
-    this.user_2 = new TelegramClient(
-      new StringSession(env.STRING_SESSION_2),
+    this.user = new TelegramClient(
+      new StringSession(env.STRING_SESSION),
       env.API_ID,
       env.API_HASH,
       { connectionRetries: 5 }
@@ -28,23 +20,20 @@ export class UserBot {
   }
 
   public async start() {
-    await this.user_1
+    await this.user
       .start({ botAuthToken: env.BOT_TOKEN })
-      .then(() => Logger.info('UserBot1 started', 'USERBOT'))
-
-    await this.user_2
-      .start({ botAuthToken: env.BOT_TOKEN })
-      .then(() => Logger.info('UserBot2 started', 'USERBOT'))
+      .then(() => Logger.info('UserBot3 started', 'USERBOT_3'))
+    await this.user.getDialogs()
   }
 
   public async getHistory() {
     HistoryUtils.reset_history()
 
     const group = env.GROUP_ID.split(',').map((id: string) => id.trim())
-    const chatMessages = await this.user_2.getMessages(group[0], {
+    const chatMessages = await this.user.getMessages(group[0], {
       filter: new Api.InputMessagesFilterEmpty(),
       reverse: false,
-      limit: 100,
+      limit: 70,
     })
     const messages = chatMessages.reverse()
     let context = ''
@@ -92,5 +81,24 @@ export class UserBot {
     HistoryUtils.write_history(context)
 
     return context
+  }
+
+  public async sendMessage(chatId: number, text: string, reply_to?: number) {
+    return this.user
+      .invoke(
+        new Api.messages.SetTyping({
+          action: new Api.SendMessageTypingAction(),
+          peer: chatId,
+        })
+      )
+      .then(async () =>
+        this.user.invoke(
+          new Api.messages.SendMessage({
+            peer: chatId,
+            replyToMsgId: reply_to,
+            message: text,
+          })
+        )
+      )
   }
 }

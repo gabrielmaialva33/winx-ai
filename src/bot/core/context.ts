@@ -6,6 +6,7 @@ import { HydrateFlavor } from '@grammyjs/hydrate'
 import { FileFlavor } from '@grammyjs/files'
 
 export interface LocalContext {}
+
 export const context = new AsyncLocalStorage<LocalContext>()
 
 export type MyContext = FileFlavor<DefaultContext> &

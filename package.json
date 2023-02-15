@@ -1,6 +1,6 @@
 {
   "name": "winx-ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Winx AI is a simple and easy to use OpenAI to interact in group chats. written in Typescript.",
   "keywords": [
     "typescript",

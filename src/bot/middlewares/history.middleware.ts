@@ -11,7 +11,9 @@ export const history: MiddlewareFn = async (ctx, next) => {
   try {
     if (
       ctx.message.from?.id === 5937441755 ||
+      ctx.message.from?.id === 5635583594 ||
       ctx.message.reply_to_message?.from?.id === 5937441755 ||
+      ctx.message.reply_to_message?.from?.id === 5635583594 ||
       ctx.message.from.is_bot ||
       ctx.message.reply_to_message?.from?.is_bot ||
       !ctx.message.from?.first_name ||

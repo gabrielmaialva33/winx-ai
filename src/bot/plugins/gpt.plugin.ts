@@ -29,14 +29,14 @@ class OpenAI extends OpenAIApi {
 
       await HistoryUtils.populate_history()
 
-      // text-curie-001
+      // text-curie-001 text-davinci-003
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt,
         temperature: 0.9,
-        max_tokens: 800,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.6,
+        max_tokens: 400,
+        frequency_penalty: 2,
+        presence_penalty: 2,
         stop: ['|'],
       })
     }
@@ -46,6 +46,8 @@ class OpenAI extends OpenAIApi {
       prompt,
       temperature: 0.9,
       max_tokens: 400,
+      frequency_penalty: 2,
+      presence_penalty: 2,
       stop: ['|'],
     })
   }

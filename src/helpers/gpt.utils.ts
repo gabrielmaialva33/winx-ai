@@ -4,7 +4,7 @@ import { ContextArgs, ContextUtils } from '@/helpers/context.utils'
 
 export const GptUtils = {
   build_input: ({ text, username }: ContextArgs) => {
-    return `${username}(Winx): |${text}|\n`
+    return `${username}(Winx):|${text}|\n`
   },
 
   build_input_from_context: (ctx: Context) => {

@@ -2,7 +2,7 @@ export const StringUtils = {
   normalize_username: (first_name: string, last_name?: string) => {
     const username = first_name
       .normalize('NFKC')
-      //.replace(/[\u0300-\u036f]/g, '')
+      .replace(/[\u0300-\u036f]/g, '')
       .replace(/\s+/g, ' ')
       .replace(/(\r\n|\n|\r)/gm, '')
       .trim()
@@ -10,7 +10,7 @@ export const StringUtils = {
         last_name
           ? ` ${last_name
               .normalize('NFKC')
-              //.replace(/[\u0300-\u036f]/g, '')
+              .replace(/[\u0300-\u036f]/g, '')
               .replace(/\s+/g, ' ')
               .replace(/(\r\n|\n|\r)/gm, '')
               .trim()}`

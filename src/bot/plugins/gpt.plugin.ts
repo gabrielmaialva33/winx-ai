@@ -21,7 +21,7 @@ class OpenAI extends OpenAIApi {
       `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,
       'IA/COMPLETE'
     )
-    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}): |`)
+    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):|`)
     Logger.info(`TOKENS: ${JSON.stringify(StringUtils.count_tokens(prompt))}`, 'IA/COMPLETE')
 
     if (StringUtils.count_tokens(prompt) > 4000) {

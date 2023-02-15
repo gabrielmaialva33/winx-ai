@@ -74,7 +74,7 @@ export class UserBot {
                 })
             }
           }
-        } else if (username) context += `${username}: |${parse_text}|\n`
+        } else if (username) context += `${username}:|${parse_text}|\n`
       }
     }
 

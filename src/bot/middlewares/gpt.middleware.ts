@@ -16,10 +16,10 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
 
     const { username, reply_to_username, reply_to_text } = ContextUtils.get_context(ctx)
 
+    // if text contains winx and not contains /imagine or /variation
     if (
       StringUtils.text_includes(text, ['winx']) &&
       !StringUtils.text_includes(text, ['/imagine', '/variation'])
-      //&& !ctx.message.reply_to_message
     ) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
@@ -35,17 +35,9 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       return ctx.reply(response.data.choices[0].text + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
-      // await User.sendMessage(
-      //   ctx.chat.id,
-      //   response.data.choices[0].text + '\n',
-      //   ctx.message.message_id
-      // )
-
-      // return next()
     }
 
-    // ctx.message.reply_to_message?.from?.id === ctx.me.id
-    // ctx.message.reply_to_message?.from?.id === 5635583594
+    // if bot is mentioned
     if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
@@ -61,15 +53,28 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       return ctx.reply(response.data.choices[0].text + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
-
-      // await User.sendMessage(
-      //   ctx.chat.id,
-      //   response.data.choices[0].text + '\n',
-      //   ctx.message.message_id
-      // )
-
-      // return next()
     }
+
+    // random reply
+    if (Math.random() < 0.05) {
+      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
+
+      Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')
+      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+
+      const response = await IA.complete(input, username)
+      if (!response.data.choices[0].text) return next()
+
+      const output = response.data.choices[0].text
+      const history = HistoryUtils.build_gpt_history(input, output, username)
+      HistoryUtils.write_history(history)
+
+      return ctx.reply(response.data.choices[0].text + '\n', {
+        reply_to_message_id: ctx.message.message_id,
+      })
+    }
+
+    return next()
   } catch (error) {
     Logger.error(error, 'MIDDLEWARE/GPT')
   }

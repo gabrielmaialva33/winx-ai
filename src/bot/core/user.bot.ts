@@ -22,7 +22,7 @@ export class UserBot {
   public async start() {
     await this.user
       .start({ botAuthToken: env.BOT_TOKEN })
-      .then(() => Logger.info('UserBot3 started', 'USERBOT_3'))
+      .then(() => Logger.info('UserBot started', 'USERBOT'))
     await this.user.getDialogs()
   }
 

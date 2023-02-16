@@ -56,23 +56,23 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // random reply
-    if (Math.random() < 0.5 && !StringUtils.text_includes(text, ['/imagine', '/variation', '/'])) {
-      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
-
-      Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
-
-      const response = await IA.complete(input, username)
-      if (!response.data.choices[0].text) return next()
-
-      const output = response.data.choices[0].text
-      const history = HistoryUtils.build_reply_gpt_history(input, output, username)
-      HistoryUtils.write_history(history)
-
-      return ctx.reply(response.data.choices[0].text + '\n', {
-        reply_to_message_id: ctx.message.message_id,
-      })
-    }
+    // if (Math.random() < 0.2 && !StringUtils.text_includes(text, ['/imagine', '/variation', '/'])) {
+    //   const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
+    //
+    //   Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')
+    //   await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+    //
+    //   const response = await IA.complete(input, username)
+    //   if (!response.data.choices[0].text) return next()
+    //
+    //   const output = response.data.choices[0].text
+    //   const history = HistoryUtils.build_reply_gpt_history(input, output, username)
+    //   HistoryUtils.write_history(history)
+    //
+    //   return ctx.reply(response.data.choices[0].text + '\n', {
+    //     reply_to_message_id: ctx.message.message_id,
+    //   })
+    // }
 
     return next()
   } catch (error) {

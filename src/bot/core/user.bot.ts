@@ -78,7 +78,7 @@ export class UserBot {
       }
     }
 
-    HistoryUtils.write_history(context)
+    //HistoryUtils.write_history(context)
 
     return context
   }

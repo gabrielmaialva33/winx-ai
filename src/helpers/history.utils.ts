@@ -23,10 +23,13 @@ export const HistoryUtils = {
   },
 
   write_history: (history: string) => {
-    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
-    const file = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
-    const prompt = StringUtils.remove_breaklines(main + file)
-    if (StringUtils.count_tokens(prompt) > 3000) HistoryUtils.slice_lines(2)
+    if (fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')) {
+      const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
+      const file = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
+      const prompt = StringUtils.remove_breaklines(main + file)
+      if (StringUtils.count_tokens(prompt) > 3000) HistoryUtils.slice_lines(2)
+    }
+
     fs.createWriteStream(process.cwd() + '/tmp/history.gpt.txt', { flags: 'a' }).write(history)
   },
 

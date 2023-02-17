@@ -35,6 +35,8 @@ class OpenAI extends OpenAIApi {
         prompt,
         temperature: 0.6,
         max_tokens: 400,
+        frequency_penalty: 2,
+        presence_penalty: 2,
         stop: ['|'],
       })
     }
@@ -44,6 +46,8 @@ class OpenAI extends OpenAIApi {
       prompt,
       temperature: 0.6,
       max_tokens: 400,
+      frequency_penalty: 2,
+      presence_penalty: 2,
       stop: ['|'],
     })
   }

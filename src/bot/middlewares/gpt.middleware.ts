@@ -32,7 +32,12 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       const history = HistoryUtils.build_gpt_history(input, output, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(response.data.choices[0].text + '\n', {
+      //random choices for reply
+      const choices = response.data.choices
+      const random = Math.floor(Math.random() * choices.length)
+      const random_choice = choices[random].text
+
+      return ctx.reply(random_choice + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
     }
@@ -50,7 +55,12 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       const history = HistoryUtils.build_reply_gpt_history(input, output, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(response.data.choices[0].text + '\n', {
+      //random choices for reply
+      const choices = response.data.choices
+      const random = Math.floor(Math.random() * choices.length)
+      const random_choice = choices[random].text
+
+      return ctx.reply(random_choice + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
     }
@@ -69,7 +79,12 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       const history = HistoryUtils.build_reply_gpt_history(input, output, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(response.data.choices[0].text + '\n', {
+      //random choices for reply
+      const choices = response.data.choices
+      const random = Math.floor(Math.random() * choices.length)
+      const random_choice = choices[random].text
+
+      return ctx.reply(random_choice + '\n', {
         reply_to_message_id: ctx.message.message_id,
       })
     }

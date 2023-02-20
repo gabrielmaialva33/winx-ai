@@ -33,9 +33,10 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt,
-        temperature: 0.6,
-        max_tokens: 400,
-        frequency_penalty: 0.5,
+        temperature: 0.4,
+        max_tokens: 60,
+        n: 10,
+        frequency_penalty: 0,
         presence_penalty: 0,
         stop: ['|'],
       })
@@ -44,9 +45,10 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion({
       model: 'text-davinci-003',
       prompt,
-      temperature: 0.6,
-      max_tokens: 400,
-      frequency_penalty: 0.5,
+      temperature: 0.4,
+      max_tokens: 60,
+      n: 10,
+      frequency_penalty: 0,
       presence_penalty: 0,
       stop: ['|'],
     })

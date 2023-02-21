@@ -13,6 +13,14 @@ class OpenAI extends OpenAIApi {
     super(new Configuration({ apiKey: env.OPENAI_TOKEN }))
   }
 
+  private RandonCompletionRequest = {
+    temperature: Math.random(),
+    max_tokens: Math.floor(Math.random() * (1000 - 50) + 50),
+    n: Math.floor(Math.random() * 10),
+    frequency_penalty: Math.random() * (2 - -2) + -2,
+    presence_penalty: Math.random() * (2 - -2) + -2,
+  }
+
   public async complete(text: string, username: string) {
     const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
@@ -33,11 +41,7 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         model: 'text-davinci-003',
         prompt,
-        temperature: 0.4,
-        max_tokens: 150,
-        n: 10,
-        frequency_penalty: 0,
-        presence_penalty: 0,
+        ...this.RandonCompletionRequest,
         stop: ['|'],
       })
     }
@@ -45,11 +49,7 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion({
       model: 'text-davinci-003',
       prompt,
-      temperature: 0.4,
-      max_tokens: 150,
-      n: 10,
-      frequency_penalty: 0,
-      presence_penalty: 0,
+      ...this.RandonCompletionRequest,
       stop: ['|'],
     })
   }

@@ -17,8 +17,9 @@ class OpenAI extends OpenAIApi {
     temperature: Math.random(),
     max_tokens: Math.floor(Math.random() * (500 - 50) + 50),
     n: Math.floor(Math.random() * 10),
-    frequency_penalty: Math.random() * (2 - -2) + -2,
-    presence_penalty: Math.random() * (2 - -2) + -2,
+    // generate a random number between -1 and 2
+    frequency_penalty: Math.random() * (2 - -1) + -1,
+    presence_penalty: Math.random() * (2 - -1) + -1,
   }
 
   public async complete(text: string, username: string) {

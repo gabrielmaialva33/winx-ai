@@ -16,12 +16,12 @@ class OpenAI extends OpenAIApi {
   private RandonCompletionRequest = {
     temperature: Math.random() * (1 - 0.5) + 0.5,
     // generate a random number between 50 and 500
-    max_tokens: Math.floor(Math.random() * (250 - 50) + 50),
+    max_tokens: Math.floor(Math.random() * (60 - 50) + 50),
     // generate a random number between 0 and 10
     n: Math.floor(Math.random() * 50),
     // generate a random number between -1 and 2
-    frequency_penalty: Math.random() * (2 - -1.5) + -1.5,
-    presence_penalty: Math.random() * (2 - -1.5) + -1.5,
+    frequency_penalty: Math.random() * (2 - -0.5) + -0.5,
+    presence_penalty: Math.random() * (2 - -0.5) + -0.5,
   }
 
   public async complete(text: string, username: string) {

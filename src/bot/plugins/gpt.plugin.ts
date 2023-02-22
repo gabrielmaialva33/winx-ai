@@ -15,7 +15,9 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     temperature: Math.random(),
+    // generate a random number between 50 and 500
     max_tokens: Math.floor(Math.random() * (500 - 50) + 50),
+    // generate a random number between 0 and 10
     n: Math.floor(Math.random() * 10),
     // generate a random number between -1 and 2
     frequency_penalty: Math.random() * (2 - -1) + -1,

@@ -7,6 +7,7 @@ import { Logger } from '@/logger'
 
 import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
+import { CreateCompletionRequest } from 'openai/api'
 
 class OpenAI extends OpenAIApi {
   constructor() {
@@ -14,14 +15,17 @@ class OpenAI extends OpenAIApi {
   }
 
   private RandonCompletionRequest = {
-    temperature: Math.random() * (1 - 0.2) + 0.2,
-    // generate a random number between 50 and 500
-    max_tokens: Math.floor(Math.random() * (500 - 50) + 50),
-    top_p: Math.random() * (1 - 0.2) + 0.2,
-    frequency_penalty: Math.random() * (1 - 0.2) + 0.2,
-    presence_penalty: Math.random() * (1 - 0.2) + 0.2,
-    n: Math.floor(Math.random() * (5 - 1) + 1),
-  }
+    model: 'text-davinci-003',
+    // random number between 0.3 and 1.0
+    temperature: Math.random() * (1.0 - 0.3) + 0.3,
+    // random number between 30 and 400
+    max_tokens: Math.floor(Math.random() * (400 - 30) + 30),
+    // random number between 0.3 and 2.0
+    frequency_penalty: Math.random() * (2.0 - 0.3) + 0.3,
+    presence_penalty: Math.random() * (2.0 - 0.3) + 0.3,
+    // random number between 1 and 20
+    n: Math.floor(Math.random() * (20 - 1) + 1),
+  } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
     const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
@@ -41,7 +45,6 @@ class OpenAI extends OpenAIApi {
 
       // text-curie-001 text-davinci-003
       return this.createCompletion({
-        model: 'text-davinci-003',
         prompt,
         ...this.RandonCompletionRequest,
         stop: ['|'],
@@ -49,7 +52,6 @@ class OpenAI extends OpenAIApi {
     }
 
     return this.createCompletion({
-      model: 'text-davinci-003',
       prompt,
       ...this.RandonCompletionRequest,
       stop: ['|'],

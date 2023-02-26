@@ -36,7 +36,6 @@ class OpenAI extends OpenAIApi {
       'IA/COMPLETE'
     )
     const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):|`)
-    Logger.info(`TOKENS: ${JSON.stringify(StringUtils.count_tokens(prompt))}`, 'IA/COMPLETE')
 
     if (StringUtils.count_tokens(prompt) > 4000) {
       Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')

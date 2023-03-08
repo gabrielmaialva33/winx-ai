@@ -3,7 +3,7 @@ import { Menu } from '@grammyjs/menu'
 
 export const StartMarkup = new Menu<Context>('start')
   .text('🔎 Comandos', (ctx) =>
-    ctx.reply(`<b>Comandos</b>`, {
+    ctx.reply(`<b>Me chame por Winx, por ex: Oi Winx</b>`, {
       parse_mode: 'HTML',
     })
   )

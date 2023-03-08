@@ -28,6 +28,7 @@ class OpenAI extends OpenAIApi {
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
+    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
     const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
 

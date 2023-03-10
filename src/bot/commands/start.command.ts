@@ -1,7 +1,8 @@
+import * as process from 'process'
+
 import { Composer, Context, InputFile } from 'grammy'
 
 import { StartMarkup } from '@/bot/markups/start.markup'
-import * as process from 'process'
 import { ContextUtils } from '@/helpers/context.utils'
 import { Logger } from '@/logger'
 

@@ -16,22 +16,21 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     model: 'text-davinci-003',
-    // random number between 0.3 and 1.0
-    temperature: Math.random() * (1.0 - 0.3) + 0.3,
-    // random number between 30 and 400
-    max_tokens: Math.floor(Math.random() * (400 - 30) + 30),
-    // random number between 0.3 and 2.0
-    frequency_penalty: Math.random() * (2.0 - 0.3) + 0.3,
-    presence_penalty: Math.random() * (2.0 - 0.3) + 0.3,
-    // random number between 1 and 20
-    n: Math.floor(Math.random() * (20 - 1) + 1),
+    max_tokens: 50,
+    temperature: Math.random() * (8.0 - 0.5) + 0.5,
+    // randomize the text by using a small number as the top_p parameter
+    top_p: Math.random() * (0.9 - 0.1) + 0.1,
+    // randomize
+    frequency_penalty: 0.5,
+    presence_penalty: 0.5,
+    n: 3,
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
-    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
     const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
 
+    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
     Logger.info(
       `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,
       'IA/COMPLETE'

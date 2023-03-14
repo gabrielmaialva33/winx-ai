@@ -1,6 +1,6 @@
 import { MiddlewareFn } from 'grammy'
-
 import { Logger } from '@/logger'
+
 import { ContextUtils } from '@/helpers/context.utils'
 import { StringUtils } from '@/helpers/string.utils'
 import { GptUtils } from '@/helpers/gpt.utils'
@@ -66,7 +66,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // random reply
-    if (Math.random() < 0.15 && !StringUtils.text_includes(text, ['/imagine', '/variation', '/'])) {
+    if (Math.random() < 0.05 && !StringUtils.text_includes(text, ['/imagine', '/variation', '/'])) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
       Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')
@@ -84,9 +84,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       const random = Math.floor(Math.random() * choices.length)
       const random_choice = choices[random].text
 
-      return ctx.reply(random_choice + '\n', {
-        reply_to_message_id: ctx.message.message_id,
-      })
+      return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
     }
 
     return next()

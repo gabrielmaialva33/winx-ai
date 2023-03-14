@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+
 import jimp from 'jimp'
 import env from '@/env'
 
@@ -16,25 +17,23 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     model: 'text-davinci-003',
-    max_tokens: 50,
-    temperature: Math.random() * (8.0 - 0.5) + 0.5,
-    // randomize the text by using a small number as the top_p parameter
-    top_p: Math.random() * (0.9 - 0.1) + 0.1,
-    // randomize
-    frequency_penalty: 0.5,
-    presence_penalty: 0.5,
-    n: 3,
+    temperature: Math.random() * (1.0 - 0.5) + 0.5,
+    max_tokens: 600,
+    frequency_penalty: Math.random() * (1.0 - 0.5) + 0.5,
+    presence_penalty: Math.random() * (1.0 - 0.5) + 0.5,
+    n: 1,
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
     const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
 
-    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
     Logger.info(
       `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,
       'IA/COMPLETE'
     )
+    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
+
     const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):|`)
 
     if (StringUtils.count_tokens(prompt) > 4000) {

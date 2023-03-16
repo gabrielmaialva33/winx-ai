@@ -6,6 +6,7 @@ coverage
 .env
 !tmp/.gitkeep
 tmp/history.gpt.txt
+tmp/system.gpt.txt
 tmp/main.gpt.txt
 .idea/
 dist

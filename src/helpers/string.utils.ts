@@ -21,8 +21,10 @@ export const StringUtils = {
       .trim()
 
     // check if username is empty
-    if (username === ' ') return 'noname'
-    if (username.trim() === '') return 'noname'
+    if (username === ' ') return 'no_username'
+    if (username.trim() === '') return 'no_username'
+
+    //return username.replace(/[^a-zA-Z0-9_-]/g, '_')
 
     return username
   },

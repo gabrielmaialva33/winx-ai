@@ -70,7 +70,9 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')
       await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
-      const response = await IA.opinion('Winx escolhe um assunto de uma mensagem aleatória')
+      const response = await IA.opinion(
+        'Winx escolhe um assunto das mensagens anteriores e comenta sobre ele.'
+      )
       if (response.data.choices.length === 0) return next()
 
       const choices = response.data.choices

@@ -22,11 +22,11 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     model: 'text-davinci-003',
-    temperature: Math.random() * (1.0 - 0.5) + 0.5,
-    max_tokens: 500,
+    temperature: Math.random() * (0.6 - 0.3) + 0.3,
+    max_tokens: 200,
     frequency_penalty: Math.random() * (1.0 - 0.2) + 0.2,
     presence_penalty: Math.random() * (1.0 - 0.2) + 0.2,
-    n: 10,
+    n: 100,
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
@@ -39,7 +39,7 @@ class OpenAI extends OpenAIApi {
     )
     Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
 
-    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):|`)
+    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):||`)
 
     if (StringUtils.count_tokens(prompt) > 4000) {
       Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
@@ -50,14 +50,43 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion({
         prompt,
         ...this.RandonCompletionRequest,
-        stop: ['|'],
+        stop: ['||'],
       })
     }
 
     return this.createCompletion({
       prompt,
       ...this.RandonCompletionRequest,
-      stop: ['|'],
+      stop: ['||'],
+    })
+  }
+
+  public async opinion(text: string) {
+    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
+    const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
+
+    Logger.info(`CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history))}`, 'IA/COMPLETE')
+    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
+
+    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx:||`)
+
+    if (StringUtils.count_tokens(prompt) > 4000) {
+      Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
+
+      await HistoryUtils.populate_history()
+
+      // text-curie-001 text-davinci-003
+      return this.createCompletion({
+        prompt,
+        ...this.RandonCompletionRequest,
+        stop: ['||'],
+      })
+    }
+
+    return this.createCompletion({
+      prompt,
+      ...this.RandonCompletionRequest,
+      stop: ['||'],
     })
   }
 
@@ -145,7 +174,7 @@ class OpenAI extends OpenAIApi {
 
     return this.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      stop: ['|'],
+      stop: ['||'],
       max_tokens: 500,
       temperature: 0.5,
       presence_penalty: 0.2,

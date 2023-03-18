@@ -8,18 +8,22 @@ import { StringUtils } from '@/helpers/string.utils'
 
 export const HistoryUtils = {
   build_gpt_history: (input: string, output: string, reply_username: string) => {
-    const io = input.replace(`\nWinx(${reply_username}):|`, '')
-    return `${io}Winx(${reply_username}):|${output}|\n`
+    const io = input.replace(`\nWinx(${reply_username}):||`, '')
+    return `${io}Winx(${reply_username}):||${output}||\n`
   },
 
   build_reply_gpt_history: (input: string, output: string, reply_username: string) => {
-    const io = input.replace(`\nWinx(${reply_username}):|`, '')
-    return `${io}Winx(${reply_username}):|${output}|\n`
+    const io = input.replace(`\nWinx(${reply_username}):||`, '')
+    return `${io}Winx(${reply_username}):||${output}||\n`
+  },
+
+  build_gpt: (output: string) => {
+    return `Winx:||${output}||\n`
   },
 
   build_chat_history: ({ text, username, reply_to_username }: ContextArgs) => {
-    if (reply_to_username) return `${username}(${reply_to_username}):|${text}|\n`
-    return `${username}:|${text}|\n`
+    if (reply_to_username) return `${username}(${reply_to_username}):||${text}||\n`
+    return `${username}:||${text}||\n`
   },
 
   write_history: (history: string) => {

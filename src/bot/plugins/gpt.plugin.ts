@@ -22,11 +22,11 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     model: 'text-davinci-003',
-    temperature: Math.random() * (0.3 - 0.0) + 0.0,
-    max_tokens: 200,
+    temperature: Math.random() * (0.9 - 0.1) + 0.1,
+    max_tokens: 500,
     frequency_penalty: Math.random() * (0.5 - 0.2) + 0.2,
     presence_penalty: Math.random() * (0.5 - 0.2) + 0.2,
-    n: 10,
+    n: 2,
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {

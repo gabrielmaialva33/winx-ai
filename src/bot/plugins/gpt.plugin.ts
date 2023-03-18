@@ -26,7 +26,7 @@ class OpenAI extends OpenAIApi {
     max_tokens: 200,
     frequency_penalty: Math.random() * (1.0 - 0.2) + 0.2,
     presence_penalty: Math.random() * (1.0 - 0.2) + 0.2,
-    n: 100,
+    n: 10,
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {

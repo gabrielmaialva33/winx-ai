@@ -15,7 +15,9 @@ export const group: MiddlewareFn = async (ctx, next) => {
         .getChatMember(ctx.me.id)
         .catch(() => Logger.error(`Bot is not member of the chat`, 'GROUP'))
       if (chatMember && chatMember.status === 'member') {
-        await ctx.reply('Desculpa, mas eu só falo no grupo Club das Winx! 🥺')
+        await ctx.reply(
+          'Desculpa, mas eu só falo no grupo Club das Winx! 🥺 🌸 Fale com o @mrootx para me adicionar em outro grupo.'
+        )
         await ctx.leaveChat()
       } else Logger.error(`Bot is not member of the chat ${ctx.chat.id}`, 'GROUP')
     }

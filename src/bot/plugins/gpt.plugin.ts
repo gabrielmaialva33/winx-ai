@@ -54,11 +54,16 @@ class OpenAI extends OpenAIApi {
       })
     }
 
-    return this.createCompletion({
-      prompt,
-      ...this.RandonCompletionRequest,
-      stop: ['||'],
-    })
+    return this.createCompletion(
+      {
+        prompt,
+        ...this.RandonCompletionRequest,
+        stop: ['||'],
+      },
+      {
+        timeout: 20000,
+      }
+    )
   }
 
   public async opinion(text: string) {

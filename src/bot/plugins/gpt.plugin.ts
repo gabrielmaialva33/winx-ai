@@ -47,11 +47,14 @@ class OpenAI extends OpenAIApi {
       await HistoryUtils.populate_history()
 
       // text-curie-001 text-davinci-003
-      return this.createCompletion({
-        prompt,
-        ...this.RandonCompletionRequest,
-        stop: ['||'],
-      })
+      return this.createCompletion(
+        {
+          prompt,
+          ...this.RandonCompletionRequest,
+          stop: ['||'],
+        },
+        { timeout: 30000 }
+      )
     }
 
     return this.createCompletion(
@@ -60,9 +63,7 @@ class OpenAI extends OpenAIApi {
         ...this.RandonCompletionRequest,
         stop: ['||'],
       },
-      {
-        timeout: 20000,
-      }
+      { timeout: 30000 }
     )
   }
 

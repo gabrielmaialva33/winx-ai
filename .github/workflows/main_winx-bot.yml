@@ -25,7 +25,7 @@ jobs:
       - name: yarn install, build and create tmp/main.gpt.txt
         run: |
           touch ./tmp/main.gpt.txt
-          echo ${{ secrets.MAIN }} > ./tmp/main.gpt.txt
+          echo "Winx AI" > ./tmp/main.gpt.txt
           yarn
           yarn build
 

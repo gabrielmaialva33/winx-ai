@@ -21,12 +21,11 @@ jobs:
         with:
           node-version: '19.x'
 
-      - name: yarn  install, build, and start
+      - name: yarn install, build
         run: |
-          yarn
-          yarn build
           echo ${{ secrets.MAIN }} > ./tmp/main.gpt.txt
           yarn
+          yarn build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

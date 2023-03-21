@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  winx_ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: winx_ai
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      API_ID: ${API_ID}
+      API_HASH: ${API_HASH}
+      BOT_TOKEN: ${BOT_TOKEN}
+      GROUP_ID: ${GROUP_ID}
+      STRING_SESSION: ${STRING_SESSION}
+      OPENAI_TOKEN: ${OPENAI_TOKEN}
+

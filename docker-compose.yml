@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: winx
-    restart: no
+    restart: 'no'
     ports:
       - '80:80'
     environment:

@@ -18,7 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
@@ -31,8 +30,7 @@ jobs:
           yarn
           yarn build
 
-            - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'winx-bot'

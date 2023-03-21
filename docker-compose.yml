@@ -1,10 +1,10 @@
 version: '3.8'
 services:
-  winx_ai:
+  winx:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: winx_ai
+    container_name: winx
     restart: always
     ports:
       - "3000:3000"

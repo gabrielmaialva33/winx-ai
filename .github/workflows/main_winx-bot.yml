@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build, and test
+      - name: npm install, build
 
         run: |
           yarn

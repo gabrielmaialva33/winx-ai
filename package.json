@@ -21,7 +21,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/main.js",
     "start:build": "rimraf dist && tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/main.js",
     "start:dev": "nodemon",

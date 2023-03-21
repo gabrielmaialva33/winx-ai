@@ -5,9 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: winx
-    restart: always
+    restart: unless-stopped
     ports:
-      - "80:80"
+      - '80:80'
     environment:
       API_ID: ${API_ID}
       API_HASH: ${API_HASH}
@@ -15,4 +15,3 @@ services:
       GROUP_ID: ${GROUP_ID}
       STRING_SESSION: ${STRING_SESSION}
       OPENAI_TOKEN: ${OPENAI_TOKEN}
-

@@ -13,7 +13,7 @@ RUN yarn && yarn build
 COPY ./tmp/main.gpt.txt ./tmp/main.gpt.txt
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 80
 
 # Run the app
 CMD [ "yarn", "start" ]

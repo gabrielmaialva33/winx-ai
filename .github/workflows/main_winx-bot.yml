@@ -21,13 +21,12 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build
-
+      - name: npm install, build, and start
         run: |
           yarn
-          npm run build --if-present
+          yarn build --if-present
           echo ${{ secrets.MAIN }} > ./tmp/main.gpt.txt
-
+          yarn start
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

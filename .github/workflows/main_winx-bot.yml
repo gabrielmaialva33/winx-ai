@@ -12,6 +12,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +24,6 @@ jobs:
         with:
           node-version: '19.x'
 
-         # echo ${{ secrets.MAIN }} > ./tmp/main.gpt.txt
       - name: yarn install, build and create tmp/main.gpt.txt
         run: |
           touch ./tmp/main.gpt.txt
@@ -29,9 +31,11 @@ jobs:
           yarn
           yarn build
 
-      - name: 'Deploy to Azure Web App'
+            - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'winx-bot'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: '.'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CAB684FF00CC40DC9B5DA704439D448A }}
+          package: .

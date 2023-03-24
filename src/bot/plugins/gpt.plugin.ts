@@ -30,8 +30,13 @@ class OpenAI extends OpenAIApi {
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
-    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
+    const temp_main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
+    const main = temp_main
+      .replace('$date', new Date().toLocaleDateString())
+      .replace('$time', new Date().toLocaleTimeString())
+
+    console.log(main)
 
     Logger.info(
       `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,
@@ -41,7 +46,7 @@ class OpenAI extends OpenAIApi {
 
     const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):||`)
 
-    if (StringUtils.count_tokens(prompt) > 4000) {
+    if (StringUtils.count_tokens(prompt) > 4096) {
       Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
 
       await HistoryUtils.populate_history()

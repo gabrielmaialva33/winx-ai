@@ -10,6 +10,7 @@ import {
   ChatCompletionRequestMessageRoleEnum,
 } from 'openai'
 import { Logger } from '@/logger'
+import { DateTime } from 'luxon'
 
 import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
@@ -32,11 +33,28 @@ class OpenAI extends OpenAIApi {
   public async complete(text: string, username: string) {
     const temp_main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
+    // replace date and time in main text file, use PT-BR locale
+    Logger.debug(
+      'Date:',
+      DateTime.local({
+        zone: 'America/Sao_Paulo',
+      }).toLocaleString(DateTime.DATE_FULL)
+    )
+    Logger.debug(
+      'Time:',
+      DateTime.local({
+        zone: 'America/Sao_Paulo',
+      }).toLocaleString(DateTime.TIME_SIMPLE)
+    )
     const main = temp_main
-      .replace('$date', new Date().toLocaleDateString())
-      .replace('$time', new Date().toLocaleTimeString())
-
-    console.log(main)
+      .replace(
+        '$date',
+        DateTime.local({ zone: 'America/Sao_Paulo' }).toLocaleString(DateTime.DATE_FULL)
+      )
+      .replace(
+        '$time',
+        DateTime.local({ zone: 'America/Sao_Paulo' }).toLocaleString(DateTime.TIME_SIMPLE)
+      )
 
     Logger.info(
       `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,

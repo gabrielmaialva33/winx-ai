@@ -69,6 +69,7 @@
     "envalid": "^7.3.1",
     "grammy": "^1.15.3",
     "jimp": "^0.22.7",
+    "luxon": "^3.3.0",
     "openai": "^3.2.1",
     "source-map-support": "^0.5.21",
     "telegram": "^2.15.10"
@@ -80,6 +81,7 @@
     "@babel/plugin-transform-typescript": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
+    "@types/luxon": "^3.2.0",
     "@types/node": "^18.15.6",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",

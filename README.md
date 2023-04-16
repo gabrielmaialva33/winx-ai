@@ -85,7 +85,7 @@ OPENAI_TOKEN=sk-1234567890... # Your OpenAI token
 
 ### :writing_hand: **Author**
 
-| [![Maia](https://avatars.githubusercontent.com/u/26732067?size=100)](https://github.com/mrootx) |
+| [![Maia](https://avatars.githubusercontent.com/u/26732067?size=100)](https://github.com/gabrielmaialva33) |
 | ----------------------------------------------------------------------------------------------- |
 | [Maia](https://github.com/gabrielmaialva33)                                                     |
 

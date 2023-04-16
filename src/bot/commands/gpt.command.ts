@@ -9,7 +9,10 @@ const composer = new Composer<MyContext>()
 
 composer.command('imagine', async (ctx) => {
   try {
-    const text = ctx.message?.text?.replace('/imagine', '').trim()
+    const text = ctx.message?.text
+      ?.replace('/imagine', '')
+      .replace('/imagine@winx_ia_bot', '')
+      .trim()
     if (!text) return
 
     const response = await IA.imagine(StringUtils.remove_breaklines(text))
@@ -26,14 +29,9 @@ composer.command('imagine', async (ctx) => {
         reply_to_message_id: ctx.message?.message_id,
       })
 
-    return ctx.replyWithPhoto(
-      new InputFile({
-        url: response.data.data[0].url,
-      }),
-      {
-        reply_to_message_id: ctx.message?.message_id,
-      }
-    )
+    return ctx.replyWithPhoto(new InputFile({ url: response.data.data[0].url }), {
+      reply_to_message_id: ctx.message?.message_id,
+    })
   } catch (_) {
     return ctx.reply('Desculpa! 🥺 Não vai rolar.', {
       reply_to_message_id: ctx.message?.message_id,

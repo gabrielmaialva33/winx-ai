@@ -1,26 +1,25 @@
-import env from '@/env'
+import Env from '@/config/env'
 
 import { Bot as BotGrammy } from 'grammy'
 import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
+import { hydrateFiles } from '@grammyjs/files'
 import { hydrate } from '@grammyjs/hydrate'
+import { Logger } from '@/helpers/logger.utils'
 
-import { Logger } from '@/logger'
 import { MyContext } from '@/bot/core/context'
-
 import Commands from '@/bot/commands'
 
 import { gpt } from '@/bot/middlewares/gpt.middleware'
 import { history } from '@/bot/middlewares/history.middleware'
 import { group } from '@/bot/middlewares/group.middleware'
-import { hydrateFiles } from '@grammyjs/files'
 
 export class Bot extends BotGrammy<MyContext> {
   constructor() {
-    super(env.BOT_TOKEN, {
+    super(Env.BOT_TOKEN, {
       client: { canUseWebhookReply: () => false },
     })
     this.api.config.use(parseMode('HTML'))
-    this.api.config.use(hydrateFiles(env.BOT_TOKEN))
+    this.api.config.use(hydrateFiles(Env.BOT_TOKEN))
 
     this.use(hydrateReply)
     this.use(hydrate())
@@ -32,16 +31,10 @@ export class Bot extends BotGrammy<MyContext> {
     this.catch((err) => Logger.error(err.message, 'BOT'))
   }
 
-  public async start() {
+  async start() {
     await this.api.setMyCommands([
-      {
-        command: 'imagine',
-        description: 'Gerar imagem com texto',
-      },
-      {
-        command: 'variation',
-        description: 'Gerar variação de imagem',
-      },
+      { command: 'imagine', description: 'Gerar imagem com texto' },
+      { command: 'variation', description: 'Gerar variação de imagem' },
     ])
 
     await super.start({

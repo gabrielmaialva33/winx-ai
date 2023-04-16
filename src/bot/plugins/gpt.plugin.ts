@@ -1,15 +1,15 @@
 import * as fs from 'fs'
 
 import jimp from 'jimp'
-import env from '@/env'
+import Env from '@/config/env'
 
 import {
-  Configuration,
-  OpenAIApi,
   ChatCompletionRequestMessage,
   ChatCompletionRequestMessageRoleEnum,
+  Configuration,
+  OpenAIApi,
 } from 'openai'
-import { Logger } from '@/logger'
+import { Logger } from '@/helpers/logger.utils'
 import { DateTime } from 'luxon'
 
 import { StringUtils } from '@/helpers/string.utils'
@@ -18,15 +18,15 @@ import { CreateCompletionRequest } from 'openai/api'
 
 class OpenAI extends OpenAIApi {
   constructor() {
-    super(new Configuration({ apiKey: env.OPENAI_TOKEN }))
+    super(new Configuration({ apiKey: Env.OPENAI_TOKEN }))
   }
 
   private RandonCompletionRequest = {
     model: 'text-davinci-003',
-    temperature: Math.random() * (0.7 - 0.4) + 0.4,
-    max_tokens: 100,
-    frequency_penalty: Math.random() * (2 - 0.1) + 0.1,
-    presence_penalty: Math.random() * (2 - 0.1) + 0.1,
+    temperature: 0.6,
+    max_tokens: 300,
+    frequency_penalty: Math.random() * (1 - 0.1) + 0.1,
+    presence_penalty: Math.random() * (1 - 0.1) + 0.1,
     n: Math.floor(Math.random() * (3 - 1) + 1),
   } as CreateCompletionRequest
 
@@ -57,14 +57,14 @@ class OpenAI extends OpenAIApi {
       )
 
     Logger.info(
-      `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,
+      `CONTEXT: ${JSON.stringify(StringUtils.InfoText(main + history + text))}`,
       'IA/COMPLETE'
     )
     Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
 
-    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):||`)
+    const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx(${username}):||`)
 
-    if (StringUtils.count_tokens(prompt) > 4096) {
+    if (StringUtils.CountTokens(prompt) > 4096) {
       Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
 
       await HistoryUtils.populate_history()
@@ -94,12 +94,12 @@ class OpenAI extends OpenAIApi {
     const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
 
-    Logger.info(`CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history))}`, 'IA/COMPLETE')
+    Logger.info(`CONTEXT: ${JSON.stringify(StringUtils.InfoText(main + history))}`, 'IA/COMPLETE')
     Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
 
-    const prompt = StringUtils.remove_breaklines(main + history + text + `Winx:||`)
+    const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx:||`)
 
-    if (StringUtils.count_tokens(prompt) > 4000) {
+    if (StringUtils.CountTokens(prompt) > 4000) {
       Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
 
       await HistoryUtils.populate_history()

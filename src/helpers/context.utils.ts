@@ -9,7 +9,7 @@ export const ContextUtils = {
     const from = ctx.message.from
     if (!from) return
 
-    return StringUtils.normalize_username(from.first_name, from.last_name)
+    return StringUtils.NormalizeUsername(from.first_name, from.last_name)
   },
 
   get_reply_to_username: (ctx: Context) => {
@@ -21,14 +21,14 @@ export const ContextUtils = {
     const reply_to_user = reply_to.from
     if (!reply_to_user) return
 
-    return StringUtils.normalize_username(reply_to_user.first_name, reply_to_user.last_name)
+    return StringUtils.NormalizeUsername(reply_to_user.first_name, reply_to_user.last_name)
   },
 
   get_text: (ctx: Context) => {
     const text = ctx.message?.text
     if (!text) return
 
-    return StringUtils.normalize_text(text)
+    return StringUtils.NormalizeText(text)
   },
 
   get_reply_to_text: (ctx: Context) => {
@@ -38,7 +38,7 @@ export const ContextUtils = {
     const replyToText = replyTo.text
     if (!replyToText) return
 
-    return StringUtils.normalize_text(replyToText)
+    return StringUtils.NormalizeText(replyToText)
   },
 
   get_context: (ctx: Context): ContextArgs => {

@@ -1,10 +1,10 @@
 import * as process from 'process'
 import * as fs from 'fs'
 
-import { User } from '@/main'
 import { ContextArgs } from '@/helpers/context.utils'
-import { Logger } from '@/logger'
+import { Logger } from '@/helpers/logger.utils'
 import { StringUtils } from '@/helpers/string.utils'
+import { User } from '@/main'
 
 export const HistoryUtils = {
   build_gpt_history: (input: string, output: string, reply_username: string) => {
@@ -30,8 +30,8 @@ export const HistoryUtils = {
     if (fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')) {
       const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
       const file = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
-      const prompt = StringUtils.remove_breaklines(main + file)
-      if (StringUtils.count_tokens(prompt) > 3000) HistoryUtils.slice_lines(2)
+      const prompt = StringUtils.RemoveBreakLines(main + file)
+      if (StringUtils.CountTokens(prompt) > 3000) HistoryUtils.slice_lines(2)
     }
 
     fs.createWriteStream(process.cwd() + '/tmp/history.gpt.txt', { flags: 'a' }).write(history)
@@ -46,6 +46,7 @@ export const HistoryUtils = {
 
   reset_history: () => {
     const isExists = fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')
+    console.log('isExists', isExists)
     if (isExists) fs.unlinkSync(process.cwd() + '/tmp/history.gpt.txt')
   },
 

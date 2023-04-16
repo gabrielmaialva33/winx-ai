@@ -1,6 +1,6 @@
 import { Winx } from '@/bot/core/bot'
 import { UserBot } from '@/bot/core/user.bot'
-import { Logger } from '@/logger'
+import { Logger } from '@/helpers/logger.utils'
 
 const User = new UserBot()
 

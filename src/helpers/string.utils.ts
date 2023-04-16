@@ -1,5 +1,5 @@
 export const StringUtils = {
-  normalize_username: (first_name: string, last_name?: string) => {
+  NormalizeUsername: (first_name: string, last_name?: string) => {
     const username = first_name
       .normalize('NFKC')
       .replace(/[\u0300-\u036f]/g, '')
@@ -29,7 +29,7 @@ export const StringUtils = {
     return username
   },
 
-  normalize_text: (text: string) => {
+  NormalizeText: (text: string) => {
     const source = text
       .normalize('NFKC')
       .replace(/\s+/g, ' ')
@@ -38,36 +38,73 @@ export const StringUtils = {
     return source.slice(0, 500)
   },
 
-  text_includes: (text: string, includes: string[]) => {
+  TextInclude: (text: string, includes: string[]) => {
     return includes.some((include) => text.toLowerCase().includes(include))
   },
 
-  remove_breaklines: (text: string) => {
-    return text.replace(/(\r\n|\n|\r)/gm, '')
+  RemoveBreakLines: (text: string) => text.replace(/(\r\n|\n|\r)/gm, ''),
+
+  RemoveIncludes: (text: string, includes: string[]) =>
+    includes.reduce((acc, include) => acc.replace(include, '').trim(), text),
+
+  CountTokens: (text: string) => text.length / 2,
+
+  CountWords: (text: string) => text.split(/\s+/).length,
+
+  CountLines: (text: string) => text.split(/\r\n|\r|\n/).length,
+
+  CountCharacters: (text: string) => text.length,
+
+  InfoText: (text: string) => ({
+    tokens: StringUtils.CountTokens(text),
+    words: StringUtils.CountWords(text),
+    lines: StringUtils.CountLines(text),
+    characters: StringUtils.CountCharacters(text),
+  }),
+
+  FormatQuery: (str: string) => {
+    if (str === undefined) return ''
+
+    const regex = /(\r\n|\n|\r)/gm
+    return str.replace(regex, ' ').replace(/\s+/g, ' ')
   },
 
-  count_tokens: (text: string) => {
-    return text.length / 2
+  FormatBindings: (bindings: any[]) => {
+    if (bindings === undefined) return '[]'
+
+    const regex = /(\r\n|\n|\r)/gm
+    const str = bindings
+      .map((item) => {
+        if (typeof item === 'string') return item.replace(regex, ' ').replace(/\s+/g, ' ')
+        return item
+      })
+      .join(', ')
+    return `[${str}]`
   },
 
-  count_words: (text: string) => {
-    return text.split(/\s+/).length
+  IsNotEmpty: (str: string) => {
+    if (str === undefined) return false
+    if (str === null) return false
+    if (str === 'undefined') return false
+    if (str === 'null') return false
+    if (str === '') return false
+    return str.trim() !== ''
   },
 
-  count_lines: (text: string) => {
-    return text.split(/\r\n|\r|\n/).length
-  },
+  Slugify: (name: string) => {
+    if (!name) return 'no_username'
 
-  count_characters: (text: string) => {
-    return text.length
-  },
+    const username = name
+      .normalize('NFKC')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/(\r\n|\n|\r)/gm, '')
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .slice(0, 20)
+      .toLowerCase()
+      .trim()
 
-  info_text: (text: string) => {
-    return {
-      tokens: StringUtils.count_tokens(text),
-      words: StringUtils.count_words(text),
-      lines: StringUtils.count_lines(text),
-      characters: StringUtils.count_characters(text),
-    }
+    if (username === '') return 'no_username'
+    return username
   },
 }

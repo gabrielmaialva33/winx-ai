@@ -4,7 +4,7 @@ import { Composer, Context, InputFile } from 'grammy'
 
 import { StartMarkup } from '@/bot/markups/start.markup'
 import { ContextUtils } from '@/helpers/context.utils'
-import { Logger } from '@/logger'
+import { Logger } from '@/helpers/logger.utils'
 
 const composer = new Composer<Context>()
 
@@ -15,6 +15,7 @@ composer.command('start', async (ctx) => {
   if (ctx.chat.type === 'supergroup') return
 
   Logger.debug(`Bot has been started by: ${ContextUtils.get_username(ctx)}`, 'START')
+
   await ctx.api.sendChatAction(ctx.chat.id, 'typing')
 
   const file = new InputFile(process.cwd() + '/src/assets/winx.gif')

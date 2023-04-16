@@ -1,5 +1,5 @@
 import { MiddlewareFn } from 'grammy'
-import { Logger } from '@/logger'
+import { Logger } from '@/helpers/logger.utils'
 
 import { StringUtils } from '@/helpers/string.utils'
 import { ContextUtils } from '@/helpers/context.utils'
@@ -10,14 +10,12 @@ export const history: MiddlewareFn = async (ctx, next) => {
 
   try {
     if (
-      ctx.message.from?.id === 5643634626 ||
       ctx.message.from?.id === 5635583594 ||
-      ctx.message.reply_to_message?.from?.id === 5643634626 ||
       ctx.message.reply_to_message?.from?.id === 5635583594 ||
       ctx.message.from.is_bot ||
       ctx.message.reply_to_message?.from?.is_bot ||
       !ctx.message.from?.first_name ||
-      StringUtils.text_includes(ctx.message!.text!, ['winx', '/'])
+      StringUtils.TextInclude(ctx.message!.text!, ['winx', '/'])
     ) {
       Logger.debug('Ignoring message', 'MIDDLEWARE/HISTORY')
       return next()

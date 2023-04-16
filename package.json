@@ -28,7 +28,11 @@
     "start:test": "nodemon --watch './**/*.ts' --exec 'ts-node' bin/test.ts",
     "test": "ts-node bin/test.ts",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:up": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:latest",
+    "db:down": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:down",
+    "db:seed": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts seed:run",
+    "db:reset": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:rollback --all && ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:latest"
   },
   "eslintConfig": {
     "extends": [
@@ -43,7 +47,8 @@
         "error"
       ],
       "no-control-regex": "off",
-      "@typescript-eslint/naming-convention": "off"
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/explicit-member-accessibility": "off"
     }
   },
   "eslintIgnore": [
@@ -64,15 +69,18 @@
     "@grammyjs/hydrate": "^1.3.1",
     "@grammyjs/menu": "^1.1.3",
     "@grammyjs/parse-mode": "^1.6.0",
-    "chalk": "^4.1.2",
+    "better-sqlite3": "^8.3.0",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
     "grammy": "^1.15.3",
     "jimp": "^0.22.7",
+    "knex": "^2.4.2",
     "luxon": "^3.3.0",
+    "objection": "^3.0.1",
     "openai": "^3.2.1",
     "source-map-support": "^0.5.21",
-    "telegram": "^2.15.15"
+    "telegram": "^2.15.15",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
@@ -81,8 +89,8 @@
     "@babel/plugin-transform-typescript": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
+    "@types/luxon": "^3.3.0",
     "@types/node": "^18.15.11",
-    "@types/luxon": "^3.2.0",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "babel-plugin-module-resolver": "^5.0.0",

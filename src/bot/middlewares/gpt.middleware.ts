@@ -1,5 +1,5 @@
 import { MiddlewareFn } from 'grammy'
-import { Logger } from '@/logger'
+import { Logger } from '@/helpers/logger.utils'
 
 import { ContextUtils } from '@/helpers/context.utils'
 import { StringUtils } from '@/helpers/string.utils'
@@ -18,8 +18,8 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
 
     // if text contains winx and not contains /imagine or /variation
     if (
-      StringUtils.text_includes(text, ['winx']) &&
-      !StringUtils.text_includes(text, ['/imagine', '/variation', '/'])
+      StringUtils.TextInclude(text, ['winx']) &&
+      !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])
     ) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
@@ -64,7 +64,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // random reply
-    if (Math.random() < 0.01 && !StringUtils.text_includes(text, ['/imagine', '/variation', '/'])) {
+    if (Math.random() < 0.01 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
       Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')

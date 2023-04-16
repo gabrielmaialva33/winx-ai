@@ -18,6 +18,7 @@
     "strictNullChecks": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "paths": {
       "@/*": ["src/*"]

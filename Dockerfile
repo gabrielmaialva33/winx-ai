@@ -1,8 +1,5 @@
 FROM node:19
 
-# Install pm2
-RUN npm install pm2 -g
-
 # Create app directory
 WORKDIR /home/winx
 
@@ -19,7 +16,7 @@ COPY ./tmp/main.gpt.txt ./tmp/main.gpt.txt
 EXPOSE 80
 
 # Run the app
-CMD [ "pm2", "start", "ecosystem.config.js" ]
+CMD [ "yarn", "start" ]
 
 
 

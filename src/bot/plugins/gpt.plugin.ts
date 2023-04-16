@@ -10,6 +10,7 @@ import {
   ChatCompletionRequestMessageRoleEnum,
 } from 'openai'
 import { Logger } from '@/logger'
+import { DateTime } from 'luxon'
 
 import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
@@ -22,16 +23,38 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     model: 'text-davinci-003',
-    temperature: Math.random() * (0.6 - 0.4) + 0.4,
-    max_tokens: 300,
-    frequency_penalty: Math.random() * (1.0 - 0.5) + 0.5,
-    presence_penalty: Math.random() * 0.5,
-    n: Math.floor(Math.random() * (10 - 1) + 1),
+    temperature: Math.random() * (1 - 0.5) + 0.5,
+    max_tokens: 100,
+    frequency_penalty: Math.random() * (1 - 0.5) + 0.5,
+    presence_penalty: Math.random() * (0.5 - 0.1) + 0.1,
+    n: Math.floor(Math.random() * (3 - 1) + 1),
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
-    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
+    const temp_main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
+    // replace date and time in main text file, use PT-BR locale
+    Logger.debug(
+      'Date:',
+      DateTime.local({
+        zone: 'America/Sao_Paulo',
+      }).toLocaleString(DateTime.DATE_FULL)
+    )
+    Logger.debug(
+      'Time:',
+      DateTime.local({
+        zone: 'America/Sao_Paulo',
+      }).toLocaleString(DateTime.TIME_SIMPLE)
+    )
+    const main = temp_main
+      .replace(
+        '$date',
+        DateTime.local({ zone: 'America/Sao_Paulo' }).toLocaleString(DateTime.DATE_FULL)
+      )
+      .replace(
+        '$time',
+        DateTime.local({ zone: 'America/Sao_Paulo' }).toLocaleString(DateTime.TIME_SIMPLE)
+      )
 
     Logger.info(
       `CONTEXT: ${JSON.stringify(StringUtils.info_text(main + history + text))}`,
@@ -41,7 +64,7 @@ class OpenAI extends OpenAIApi {
 
     const prompt = StringUtils.remove_breaklines(main + history + text + `Winx(${username}):||`)
 
-    if (StringUtils.count_tokens(prompt) > 4000) {
+    if (StringUtils.count_tokens(prompt) > 4096) {
       Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
 
       await HistoryUtils.populate_history()

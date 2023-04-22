@@ -46,7 +46,6 @@ export const HistoryUtils = {
 
   reset_history: () => {
     const isExists = fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')
-    console.log('isExists', isExists)
     if (isExists) fs.unlinkSync(process.cwd() + '/tmp/history.gpt.txt')
   },
 

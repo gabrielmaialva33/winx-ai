@@ -1,0 +1,22 @@
+{
+  "chat": {
+    "id": -1001621792868,
+    "title": "POL: Club das Winx 🎡🔥"
+  },
+  "user": {
+    "id": 5191342546,
+    "username": "Halal_Wolf",
+    "name": "LOBINHO HALAL"
+  },
+  "message_id": 1415776,
+  "text": "acha q o Paraguai dança?",
+  "reply_to": {
+    "message_id": 1415774,
+    "user": {
+      "id": 5191342546,
+      "username": "Halal_Wolf",
+      "name": "LOBINHO HALAL"
+    },
+    "text": "E só piora pq a única saída por via terrestre é o maldito estreito"
+  }
+}

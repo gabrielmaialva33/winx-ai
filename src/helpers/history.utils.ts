@@ -37,6 +37,15 @@ export const HistoryUtils = {
     fs.createWriteStream(process.cwd() + '/tmp/history.gpt.txt', { flags: 'a' }).write(history)
   },
 
+  write_context: (context: string) => {
+    fs.writeFileSync(process.cwd() + '/tmp/context.gpt.txt', context)
+
+    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
+    const file = fs.readFileSync(process.cwd() + '/tmp/context.gpt.txt', 'utf8')
+    const prompt = StringUtils.RemoveBreakLines(main + file)
+    if (StringUtils.CountTokens(prompt) > 3000) HistoryUtils.slice_lines(2)
+  },
+
   slice_lines: (n: number) => {
     const history_file = process.cwd() + '/tmp/history.gpt.txt'
     if (!fs.existsSync(history_file)) return

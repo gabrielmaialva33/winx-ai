@@ -25,9 +25,9 @@ export const StringUtils = {
     if (username === ' ') return 'no_username'
     if (username.trim() === '') return 'no_username'
 
-    return username.replace(/[^a-zA-Z0-9_-]/g, '_')
+    //return username.replace(/[^a-zA-Z0-9_-]/g, '_')
 
-    //return username
+    return username
   },
 
   NormalizeName: (first_name: string, last_name?: string) => {

@@ -64,13 +64,13 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // random reply
-    if (Math.random() < 0.1 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
+    if (Math.random() < 0.09 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
       Logger.info(input, 'random.gpt.middleware')
       await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
-      const response = await IA.opinion('Winx fica com raiva de um usuário e o bloqueia.')
+      const response = await IA.complete(input, username)
       if (response.data.choices.length === 0) return next()
 
       const choices = response.data.choices
@@ -78,10 +78,10 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       const random_choice = choices[random].text
       if (!random_choice) return next()
 
-      const history = HistoryUtils.build_reply_gpt_history(input, random_choice, username)
+      const history = HistoryUtils.build_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(random_choice + '\n', {})
+      return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
     }
 
     // if user send message on direct to bot

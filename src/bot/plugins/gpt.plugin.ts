@@ -23,10 +23,10 @@ class OpenAI extends OpenAIApi {
 
   private RandonCompletionRequest = {
     model: 'text-davinci-002',
-    temperature: Math.random(),
-    max_tokens: 400,
-    frequency_penalty: Math.random(),
-    presence_penalty: Math.random(),
+    temperature: 1,
+    max_tokens: 60,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.3,
     n: Math.floor(Math.random() * (3 - 1) + 1),
     stop: ['||'],
   } as CreateCompletionRequest
@@ -34,7 +34,6 @@ class OpenAI extends OpenAIApi {
   public async complete(text: string, username: string) {
     const temp_main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
-    // replace date and time in main text file, use PT-BR locale
 
     const main = temp_main
       .replace(
@@ -47,15 +46,15 @@ class OpenAI extends OpenAIApi {
       )
 
     Logger.info(
-      `CONTEXT: ${JSON.stringify(StringUtils.InfoText(main + history + text))}`,
-      'IA/COMPLETE'
+      `context: ${JSON.stringify(StringUtils.InfoText(main + history + text))}`,
+      'ai.complete'
     )
-    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
+    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'ai.complete')
 
     const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx(${username}):||`)
 
     if (StringUtils.CountTokens(prompt) > 4096) {
-      Logger.error('Tokens limit exceeded!', 'IA/COMPLETE')
+      Logger.error('tokens limit exceeded!', 'ai.complete')
 
       await HistoryUtils.populate_history()
 

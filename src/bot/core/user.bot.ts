@@ -22,7 +22,7 @@ export class UserBot {
   async start() {
     await this.user
       .start({ botAuthToken: Env.BOT_TOKEN })
-      .then(() => Logger.debug('UserBot started', 'USER_BOT'))
+      .then(() => Logger.debug('user bot started', 'user.bot'))
     await this.user.getDialogs()
   }
 
@@ -33,7 +33,7 @@ export class UserBot {
     const chatMessages = await this.user.getMessages(group[0], {
       filter: new Api.InputMessagesFilterEmpty(),
       reverse: false,
-      limit: 1,
+      limit: 100,
     })
     const messages = chatMessages.reverse()
     let context = ''

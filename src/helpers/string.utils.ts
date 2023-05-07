@@ -19,14 +19,43 @@ export const StringUtils = {
       .replace(/[^a-zA-Z0-9 ]/g, '')
       .slice(0, 20)
       .trim()
+      .toLowerCase()
 
     // check if username is empty
     if (username === ' ') return 'no_username'
     if (username.trim() === '') return 'no_username'
 
-    //return username.replace(/[^a-zA-Z0-9_-]/g, '_')
+    return username.replace(/[^a-zA-Z0-9_-]/g, '_')
 
-    return username
+    //return username
+  },
+
+  NormalizeName: (first_name: string, last_name?: string) => {
+    const name = first_name
+      .normalize('NFKC')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/(\r\n|\n|\r)/gm, '')
+      .trim()
+      .concat(
+        last_name
+          ? ` ${last_name
+              .normalize('NFKC')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/\s+/g, ' ')
+              .replace(/(\r\n|\n|\r)/gm, '')
+              .trim()}`
+          : ''
+      )
+      .replace(/[^a-zA-Z0-9 ]/g, '')
+      .slice(0, 20)
+      .trim()
+
+    // check if username is empty
+    if (name === ' ') return 'no_name'
+    if (name.trim() === '') return 'no_name'
+
+    return name
   },
 
   NormalizeText: (text: string) => {

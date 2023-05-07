@@ -9,13 +9,12 @@ export class UserModel extends BaseModel {
    * ------------------------------------------------------
    */
   telegram_id: number
-  fist_name: string
-  last_name: string
-  username?: string
+  first_name: string
+  username: string
 
   /**
    * ------------------------------------------------------
-   * Hooks
+   )   * Hooks
    * ------------------------------------------------------
    */
 

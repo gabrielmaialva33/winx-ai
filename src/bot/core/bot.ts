@@ -12,6 +12,7 @@ import Commands from '@/bot/commands'
 import { gpt } from '@/bot/middlewares/gpt.middleware'
 import { history } from '@/bot/middlewares/history.middleware'
 import { group } from '@/bot/middlewares/group.middleware'
+import { data } from '@/bot/middlewares/data.middleware'
 
 export class Bot extends BotGrammy<MyContext> {
   constructor() {
@@ -25,7 +26,7 @@ export class Bot extends BotGrammy<MyContext> {
     this.use(hydrate())
     this.use(Commands)
 
-    this.on('message', group)
+    this.on('msg', group, data)
     this.on('message:text', history, gpt)
 
     this.catch((err) => Logger.error(err.message, 'BOT'))
@@ -40,7 +41,7 @@ export class Bot extends BotGrammy<MyContext> {
     await super.start({
       drop_pending_updates: true,
       allowed_updates: ['message', 'callback_query'],
-      onStart: async () => Logger.info('Bot is running!', 'BOT'),
+      onStart: async () => Logger.info('bot is running!', 'bot.start'),
     })
   }
 }

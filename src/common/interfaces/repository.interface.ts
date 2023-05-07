@@ -40,7 +40,17 @@ export interface RepositoryInterface<M extends BaseModel> {
    * @example
    * const user = await this.userRepository.createOrUpdate({ name: 'John Doe' }, { name: 'John Doe' })
    */
-  createOrUpdate(search: Partial<ModelAttributes<M>>, payload: ModelAttributes<M>): Promise<M>
+  findOrCreate(search: Partial<ModelAttributes<M>>, payload: ModelAttributes<M>): Promise<M>
+
+  /**
+   * @description Create a new M or update an existing one.
+   * @param {ModelAttributes<Model>} payload
+   * @returns {Promise<Model>}
+   * @memberof RepositoryInterface
+   * @example
+   * const user = await this.userRepository.upsert({ name: 'John Doe' })
+   */
+  upsert(payload: ModelAttributes<M>): Promise<M>
 }
 
 export type ModelAttributes<M extends BaseModel> = { [P in keyof M]?: M[P] }

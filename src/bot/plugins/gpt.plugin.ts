@@ -22,30 +22,20 @@ class OpenAI extends OpenAIApi {
   }
 
   private RandonCompletionRequest = {
-    model: 'text-davinci-003',
-    temperature: Math.random() * (0.7 - 0.4) + 0.4,
-    max_tokens: 200,
+    model: 'text-ada-001',
+    temperature: Math.random() * (1 - 0.8) + 0.8,
+    max_tokens: 400,
     frequency_penalty: Math.random() * (1 - 0.5) + 0.5,
-    presence_penalty: Math.random() * (1 - 0.1) + 0.1,
+    presence_penalty: Math.random(),
     n: Math.floor(Math.random() * (3 - 1) + 1),
+    stop: ['||'],
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {
     const temp_main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
     // replace date and time in main text file, use PT-BR locale
-    Logger.debug(
-      'Date:',
-      DateTime.local({
-        zone: 'America/Sao_Paulo',
-      }).toLocaleString(DateTime.DATE_FULL)
-    )
-    Logger.debug(
-      'Time:',
-      DateTime.local({
-        zone: 'America/Sao_Paulo',
-      }).toLocaleString(DateTime.TIME_SIMPLE)
-    )
+
     const main = temp_main
       .replace(
         '$date',
@@ -144,6 +134,12 @@ class OpenAI extends OpenAIApi {
   }
 
   public async chat(text: string, username: string) {
+    if (!fs.existsSync(process.cwd() + '/tmp/system.gpt.txt'))
+      fs.writeFileSync(process.cwd() + '/tmp/system.gpt.txt', '')
+
+    if (!fs.existsSync(process.cwd() + '/tmp/history.gpt.txt'))
+      fs.writeFileSync(process.cwd() + '/tmp/history.gpt.txt', '')
+
     const system = fs.readFileSync(process.cwd() + '/tmp/system.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
 
@@ -204,7 +200,7 @@ class OpenAI extends OpenAIApi {
     return this.createChatCompletion({
       model: 'gpt-3.5-turbo',
       stop: ['||'],
-      max_tokens: 500,
+      max_tokens: 100,
       temperature: 0.5,
       presence_penalty: 0.2,
       frequency_penalty: 0.2,

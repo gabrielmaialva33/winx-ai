@@ -64,15 +64,13 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // random reply
-    if (Math.random() < 0.09 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
+    if (Math.random() < 0.1 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      Logger.info(input, 'MIDDLEWARE/GPT/RANDOM')
+      Logger.info(input, 'random.gpt.middleware')
       await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
-      const response = await IA.opinion(
-        'Winx escolhe um assunto das mensagens anteriores e comenta sobre ele.'
-      )
+      const response = await IA.opinion('Winx fica com raiva de um usuário e o bloqueia.')
       if (response.data.choices.length === 0) return next()
 
       const choices = response.data.choices
@@ -90,7 +88,7 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     if (ctx.chat.type === 'private') {
       const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      Logger.info(input, 'MIDDLEWARE/GPT/PRIVATE')
+      Logger.info(input, 'private.gpt.middleware')
       await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
       const response = await IA.complete(input, username)
@@ -109,6 +107,6 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
 
     return next()
   } catch (error) {
-    Logger.error(error, 'MIDDLEWARE/GPT')
+    Logger.error(error, 'gpt.middleware')
   }
 }

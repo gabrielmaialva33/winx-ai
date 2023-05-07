@@ -9,25 +9,27 @@ export const group: MiddlewareFn = async (ctx, next) => {
 
   if (ctx.chat.type === 'supergroup')
     if (!groups.includes(ctx.chat.id.toString())) {
-      Logger.info(`Leaving chat ${ctx.chat.id}`, 'GROUP')
+      Logger.info(`leaving chat ${ctx.chat.id}`, 'group.middleware')
 
       const member = await ctx
         .getChatMember(ctx.me.id)
-        .catch(() => Logger.error(`Bot is not member of the chat`, 'GROUP'))
+        .catch(() => Logger.error(`bot is not member of the chat`, 'group.middleware'))
       if (member)
         await ctx
           .reply(
             'Desculpa, mas eu só falo no grupo Club das Winx! 🥺 🌸 Fale com o @mrootx para me adicionar em outro grupo.'
           )
           .then(() =>
-            ctx.leaveChat().catch(() => Logger.error(`Bot is not member of the chat`, 'GROUP'))
+            ctx
+              .leaveChat()
+              .catch(() => Logger.error(`Bot is not member of the chat`, 'group.middleware'))
           )
       else
         await ctx
           .reply(
             'Desculpa, mas eu só falo no grupo Club das Winx! 🥺 🌸 Fale com o @mrootx para me adicionar em outro grupo.'
           )
-          .catch(() => Logger.error(`Bot is not member of the chat`, 'GROUP'))
+          .catch(() => Logger.error(`Bot is not member of the chat`, 'group.middleware'))
     }
 
   return next()

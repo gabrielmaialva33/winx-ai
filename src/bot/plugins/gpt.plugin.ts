@@ -26,7 +26,7 @@ class OpenAI extends OpenAIApi {
     temperature: 1,
     max_tokens: 100,
     frequency_penalty: 2.0,
-    presence_penalty: 2.0,
+    presence_penalty: 1.0,
     n: Math.floor(Math.random() * 5) + 1,
     stop: ['||'],
   } as CreateCompletionRequest

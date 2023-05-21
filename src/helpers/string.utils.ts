@@ -16,10 +16,10 @@ export const StringUtils = {
               .trim()}`
           : ''
       )
-      .replace(/[^a-zA-Z0-9 ]/g, '')
+      //.replace(/[^a-zA-Z0-9 ]/g, '')
       .slice(0, 20)
       .trim()
-      .toLowerCase()
+    //.toLowerCase()
 
     // check if username is empty
     if (username === ' ') return 'no_username'
@@ -47,7 +47,7 @@ export const StringUtils = {
               .trim()}`
           : ''
       )
-      .replace(/[^a-zA-Z0-9 ]/g, '')
+      //.replace(/[^a-zA-Z0-9 ]/g, '')
       .slice(0, 20)
       .trim()
 

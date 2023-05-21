@@ -25,12 +25,10 @@ class OpenAI extends OpenAIApi {
     model: 'text-davinci-002',
     temperature: 1,
     max_tokens: 100,
-    frequency_penalty: 0.2,
-    presence_penalty: 1.4,
-    n: 1,
+    frequency_penalty: 2.0,
+    presence_penalty: 2.0,
+    n: Math.floor(Math.random() * 5) + 1,
     stop: ['||'],
-    stream: false,
-    logprobs: null,
   } as CreateCompletionRequest
 
   public async complete(text: string, username: string) {

@@ -34,7 +34,7 @@ export const data: MiddlewareFn = async (ctx, next) => {
 
   //console.log({ context, replay: context.reply_to.user })
 
-  HistoryUtils.write_context(JSON.stringify(context, null, 2))
+  //HistoryUtils.write_context(JSON.stringify(context, null, 2))
 
   return next()
 }

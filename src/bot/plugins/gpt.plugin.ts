@@ -22,12 +22,14 @@ class OpenAI extends OpenAIApi {
   }
 
   private RandonCompletionRequest = {
-    model: 'text-davinci-002',
-    temperature: 1,
-    max_tokens: 100,
-    frequency_penalty: 2.0,
-    presence_penalty: 1.0,
-    n: Math.floor(Math.random() * 5) + 1,
+    model: 'text-davinci-003',
+    temperature: 0.5,
+    max_tokens: 500,
+    frequency_penalty: 1.5,
+    presence_penalty: 0,
+    //top_p: 0.3,
+    n: Math.floor(Math.random() * 3) + 1,
+    //n: 1,
     stop: ['||'],
   } as CreateCompletionRequest
 

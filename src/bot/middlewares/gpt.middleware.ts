@@ -64,25 +64,25 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
     }
 
     // random reply
-    if (Math.random() < 0.09 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
-      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
+    // if (Math.random() < 0.009 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
+    //   const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      Logger.info(input, 'random.gpt.middleware')
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+    //   Logger.info(input, 'random.gpt.middleware')
+    //   await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
 
-      const response = await IA.complete(input, username)
-      if (response.data.choices.length === 0) return next()
+    //   const response = await IA.complete(input, username)
+    //   if (response.data.choices.length === 0) return next()
 
-      const choices = response.data.choices
-      const random = Math.floor(Math.random() * choices.length)
-      const random_choice = choices[random].text
-      if (!random_choice) return next()
+    //   const choices = response.data.choices
+    //   const random = Math.floor(Math.random() * choices.length)
+    //   const random_choice = choices[random].text
+    //   if (!random_choice) return next()
 
-      const history = HistoryUtils.build_gpt_history(input, random_choice, username)
-      HistoryUtils.write_history(history)
+    //   const history = HistoryUtils.build_gpt_history(input, random_choice, username)
+    //   HistoryUtils.write_history(history)
 
-      return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
-    }
+    //   return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
+    // }
 
     // if user send message on direct to bot
     if (ctx.chat.type === 'private') {

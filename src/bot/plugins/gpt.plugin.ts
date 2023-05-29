@@ -26,7 +26,7 @@ class OpenAI extends OpenAIApi {
     temperature: 1,
     max_tokens: 500,
     frequency_penalty: 1.5,
-    presence_penalty: 0,
+    presence_penalty: 0.6,
     //top_p: 0.3,
     //n: Math.floor(Math.random() * 3) + 1,
     n: 1,

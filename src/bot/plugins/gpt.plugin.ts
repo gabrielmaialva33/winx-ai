@@ -21,17 +21,82 @@ class OpenAI extends OpenAIApi {
     super(new Configuration({ apiKey: Env.OPENAI_TOKEN }))
   }
 
+  private models = {
+    'text-davinci-003': 'davinci',
+    'text-davinci-002': 'davinci',
+  }
+
+  private temperatures = {
+    'text-davinci-003': [0.7, 0.8, 0.9, 1.0],
+    'text-davinci-002': [0.7, 0.8, 0.9, 1.0],
+  }
+
+  private frequencies = {
+    'text-davinci-003': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    'text-davinci-002': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  }
+
+  private presences = {
+    'text-davinci-003': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    'text-davinci-002': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  }
+
+  private n = {
+    'text-davinci-003': [1],
+    'text-davinci-002': [1, 2],
+  }
+
   private RandonCompletionRequest = {
-    model: 'text-davinci-003',
-    temperature: 1,
+    // randomize models
+    model: Object.keys(this.models)[Math.floor(Math.random() * Object.keys(this.models).length)],
+    // randomize temperatures by model
+    temperature:
+      // @ts-ignore
+      this.temperatures[
+        // @ts-ignore
+        this.models[model][
+          Math.floor(
+            // @ts-ignore
+            Math.random() * this.temperatures[this.models[model as any] as any].length
+          ) as any
+        ] as any
+      ],
     max_tokens: 200,
-    // randomize 1.5 2.0
-    // frequency_penalty: Math.random() * (2.0 - 1.5) + 1.5,
-    // randomize 1.0 1.5
-    // presence_penalty: Math.random() * (1.5 - 1.0) + 1.0,
-    frequency_penalty: 1.5,
-    presence_penalty: 0.5,
-    n: 1,
+    // randomize frequencies by model
+    frequency_penalty:
+      // @ts-ignore
+      this.frequencies[
+        // @ts-ignore
+        this.models[model][
+          Math.floor(
+            // @ts-ignore
+            Math.random() * this.frequencies[this.models[model as any] as any].length
+          ) as any
+        ] as any
+      ],
+    // randomize presences by model
+    presence_penalty:
+      // @ts-ignore
+      this.presences[
+        // @ts-ignore
+        this.models[model][
+          Math.floor(
+            // @ts-ignore
+            Math.random() * this.presences[this.models[model as any] as any].length
+          ) as any
+        ] as any
+      ],
+    // randomize n by model
+    // @ts-ignore
+    n: this.n[
+      // @ts-ignore
+      this.models[model][
+        Math.floor(
+          // @ts-ignore
+          Math.random() * this.n[this.models[model as any] as any].length
+        ) as any
+      ] as any
+    ],
     stop: ['||'],
   } as CreateCompletionRequest
 

@@ -32,13 +32,13 @@ class OpenAI extends OpenAIApi {
   }
 
   private frequencies = {
-    'text-davinci-003': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    'text-davinci-002': [0.8, 0.9, 1.0],
+    'text-davinci-003': [1.0, 1.3, 1.5, 1.7, 2.0],
+    'text-davinci-002': [1.0, 1.5, 2.0],
   }
 
   private presences = {
-    'text-davinci-003': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    'text-davinci-002': [0.8, 0.9, 1.0],
+    'text-davinci-003': [1.0, 1.3, 1.5, 1.7, 2.0],
+    'text-davinci-002': [1.0, 1.5, 2.0],
   }
 
   private n = {

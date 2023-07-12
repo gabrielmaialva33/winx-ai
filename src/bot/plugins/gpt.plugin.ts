@@ -28,17 +28,17 @@ class OpenAI extends OpenAIApi {
 
   private temperatures = {
     'text-davinci-003': [0.7, 0.8, 0.9, 1.0],
-    'text-davinci-002': [0.7, 0.8, 0.9, 1.0],
+    'text-davinci-002': [0.9, 1.0],
   }
 
   private frequencies = {
     'text-davinci-003': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    'text-davinci-002': [0.9, 1.0],
+    'text-davinci-002': [0.8, 0.9, 1.0],
   }
 
   private presences = {
     'text-davinci-003': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    'text-davinci-002': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    'text-davinci-002': [0.8, 0.9, 1.0],
   }
 
   private n = {

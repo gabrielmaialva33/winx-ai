@@ -46,73 +46,29 @@ class OpenAI extends OpenAIApi {
     'text-davinci-002': [1, 2],
   }
 
-  private RandonCompletionRequest = {
-    // randomize models
-    model: Object.keys(this.models)[Math.floor(Math.random() * Object.keys(this.models).length)],
-    // randomize temperatures by model
-    temperature:
-      // @ts-ignore
-      this.temperatures[
-        // @ts-ignore
-        this.models[model][
-          Math.floor(
-            // @ts-ignore
-            Math.random() * this.temperatures[this.models[model as any] as any].length
-          ) as any
-        ] as any
-      ],
-    max_tokens: 200,
-    // randomize frequencies by model
-    frequency_penalty:
-      // @ts-ignore
-      this.frequencies[
-        // @ts-ignore
-        this.models[model][
-          Math.floor(
-            // @ts-ignore
-            Math.random() * this.frequencies[this.models[model as any] as any].length
-          ) as any
-        ] as any
-      ],
-    // randomize presences by model
-    presence_penalty:
-      // @ts-ignore
-      this.presences[
-        // @ts-ignore
-        this.models[model][
-          Math.floor(
-            // @ts-ignore
-            Math.random() * this.presences[this.models[model as any] as any].length
-          ) as any
-        ] as any
-      ],
-    // randomize n by model
-    // @ts-ignore
-    n: this.n[
-      // @ts-ignore
-      this.models[model][
-        Math.floor(
-          // @ts-ignore
-          Math.random() * this.n[this.models[model as any] as any].length
-        ) as any
-      ] as any
-    ],
-    stop: ['||'],
-  } as CreateCompletionRequest
-
-  private getRandonCompletionRequest(): CreateCompletionRequest {
+  private GetRandomCompletionRequest() {
     const model = Object.keys(this.models)[
       Math.floor(Math.random() * Object.keys(this.models).length)
     ]
 
+    const temperature =
+      // @ts-ignore
+      this.temperatures[model][Math.floor(Math.random() * this.temperatures[model].length)]
+    const frequency =
+      // @ts-ignore
+      this.frequencies[model][Math.floor(Math.random() * this.frequencies[model].length)]
+    // @ts-ignore
+    const presence = this.presences[model][Math.floor(Math.random() * this.presences[model].length)]
+    // @ts-ignore
+    const n = this.n[model][Math.floor(Math.random() * this.n[model].length)]
+
     return {
       model,
-      temperature:
-        // @ts-ignore
-        this.temperatures[model][Math.floor(Math.random() * this.temperatures[model].length)],
-      max_tokens: 200,
-      // similar changes for the rest of the properties...
-    }
+      temperature,
+      frequency_penalty: frequency,
+      presence_penalty: presence,
+      n,
+    } as CreateCompletionRequest
   }
 
   public async complete(text: string, username: string) {
@@ -133,7 +89,7 @@ class OpenAI extends OpenAIApi {
       `context: ${JSON.stringify(StringUtils.InfoText(main + history + text))}`,
       'ai.complete'
     )
-    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'ai.complete')
+    Logger.info(`CONFIG: ${JSON.stringify(this.GetRandomCompletionRequest())}`, 'ai.complete')
 
     const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx(${username}):||`)
 
@@ -146,7 +102,7 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion(
         {
           prompt,
-          ...this.getRandonCompletionRequest(),
+          ...this.GetRandomCompletionRequest(),
           stop: ['||'],
         },
         { timeout: 30000 }
@@ -156,7 +112,7 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion(
       {
         prompt,
-        ...this.getRandonCompletionRequest(),
+        ...this.GetRandomCompletionRequest(),
         stop: ['||'],
       },
       { timeout: 30000 }
@@ -168,7 +124,7 @@ class OpenAI extends OpenAIApi {
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
 
     Logger.info(`CONTEXT: ${JSON.stringify(StringUtils.InfoText(main + history))}`, 'IA/COMPLETE')
-    Logger.info(`CONFIG: ${JSON.stringify(this.RandonCompletionRequest)}`, 'IA/COMPLETE')
+    Logger.info(`CONFIG: ${JSON.stringify(this.GetRandomCompletionRequest())}`, 'IA/COMPLETE')
 
     const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx:||`)
 
@@ -180,14 +136,14 @@ class OpenAI extends OpenAIApi {
       // text-curie-001 text-davinci-003
       return this.createCompletion({
         prompt,
-        ...this.getRandonCompletionRequest(),
+        ...this.GetRandomCompletionRequest(),
         stop: ['||'],
       })
     }
 
     return this.createCompletion({
       prompt,
-      ...this.getRandonCompletionRequest(),
+      ...this.GetRandomCompletionRequest(),
       stop: ['||'],
     })
   }

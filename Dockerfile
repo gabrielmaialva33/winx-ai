@@ -1,4 +1,4 @@
-FROM node:19
+FROM node:latest
 
 # Create app directory
 WORKDIR /home/winx

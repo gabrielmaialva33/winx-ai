@@ -100,6 +100,21 @@ class OpenAI extends OpenAIApi {
     stop: ['||'],
   } as CreateCompletionRequest
 
+  private getRandonCompletionRequest(): CreateCompletionRequest {
+    const model = Object.keys(this.models)[
+      Math.floor(Math.random() * Object.keys(this.models).length)
+    ]
+
+    return {
+      model,
+      temperature:
+        // @ts-ignore
+        this.temperatures[model][Math.floor(Math.random() * this.temperatures[model].length)],
+      max_tokens: 200,
+      // similar changes for the rest of the properties...
+    }
+  }
+
   public async complete(text: string, username: string) {
     const temp_main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
     const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
@@ -131,7 +146,7 @@ class OpenAI extends OpenAIApi {
       return this.createCompletion(
         {
           prompt,
-          ...this.RandonCompletionRequest,
+          ...this.getRandonCompletionRequest(),
           stop: ['||'],
         },
         { timeout: 30000 }
@@ -141,7 +156,7 @@ class OpenAI extends OpenAIApi {
     return this.createCompletion(
       {
         prompt,
-        ...this.RandonCompletionRequest,
+        ...this.getRandonCompletionRequest(),
         stop: ['||'],
       },
       { timeout: 30000 }
@@ -165,14 +180,14 @@ class OpenAI extends OpenAIApi {
       // text-curie-001 text-davinci-003
       return this.createCompletion({
         prompt,
-        ...this.RandonCompletionRequest,
+        ...this.getRandonCompletionRequest(),
         stop: ['||'],
       })
     }
 
     return this.createCompletion({
       prompt,
-      ...this.RandonCompletionRequest,
+      ...this.getRandonCompletionRequest(),
       stop: ['||'],
     })
   }

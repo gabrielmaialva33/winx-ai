@@ -64,11 +64,11 @@ class OpenAI extends OpenAIApi {
 
     return {
       model,
-      temperature,
-      frequency_penalty: frequency,
-      presence_penalty: presence,
-      n,
-      max_tokens: 200,
+      temperature: 1,
+      frequency_penalty: 1.5,
+      presence_penalty: 1.0,
+      n: 1,
+      max_tokens: 500,
     } as CreateCompletionRequest
   }
 

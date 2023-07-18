@@ -15,6 +15,8 @@ composer.command('reset', async (ctx) => {
   HistoryUtils.reset_history()
 
   Logger.debug(`Bot has been reset by: ${ContextUtils.get_username(ctx)}`, 'RESET')
+
+  return ctx.reply('✅ Bot resetado com sucesso!', { reply_to_message_id: ctx.message?.message_id })
 })
 
 export default composer

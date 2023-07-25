@@ -68,7 +68,7 @@ class OpenAI extends OpenAIApi {
       max_tokens: 256,
       frequency_penalty: 2,
       presence_penalty: 1.5,
-      n: 3,
+      n: 1,
     } as CreateCompletionRequest
   }
 

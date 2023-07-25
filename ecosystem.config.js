@@ -4,7 +4,7 @@ module.exports = {
       name: 'winx',
       command: './node_modules/.bin/rimraf dist && npm run build && npm run start',
       restart: true,
-      cron_restart: '0 */1 * * *',
+      cron_restart: '0 */3 * * *', // Every 8 hours
     },
   ],
 }

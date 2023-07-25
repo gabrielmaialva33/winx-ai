@@ -64,13 +64,11 @@ class OpenAI extends OpenAIApi {
 
     return {
       model: 'text-davinci-003',
-      temperature: 1,
+      temperature: 0.7,
+      max_tokens: 256,
       frequency_penalty: 1.5,
-      presence_penalty: 1.0,
+      presence_penalty: 1,
       n: 1,
-      max_tokens: 200,
-      stream: false,
-      logprobs: null,
     } as CreateCompletionRequest
   }
 
@@ -242,7 +240,7 @@ class OpenAI extends OpenAIApi {
     return this.createChatCompletion({
       model: 'gpt-3.5-turbo',
       stop: ['||'],
-      max_tokens: 100,
+      max_tokens: 256,
       temperature: 0.5,
       presence_penalty: 0.2,
       frequency_penalty: 0.2,

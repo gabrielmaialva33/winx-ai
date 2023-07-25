@@ -65,8 +65,8 @@ class OpenAI extends OpenAIApi {
     return {
       model: 'text-davinci-003',
       temperature: 1,
-      frequency_penalty: 1.5,
-      presence_penalty: 1.0,
+      frequency_penalty: 2,
+      presence_penalty: 1.5,
       n: 1,
       max_tokens: 60,
     } as CreateCompletionRequest

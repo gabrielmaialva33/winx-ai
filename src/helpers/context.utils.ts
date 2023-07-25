@@ -9,7 +9,7 @@ export const ContextUtils = {
     const from = ctx.message.from
     if (!from) return 'null'
 
-    return StringUtils.NormalizeUsername(from.first_name, from.last_name).toLowerCase()
+    return StringUtils.NormalizeName(from.first_name, from.last_name)
   },
 
   get_name: (ctx: Context) => {
@@ -18,7 +18,7 @@ export const ContextUtils = {
     const from = ctx.message.from
     if (!from) return 'null'
 
-    return StringUtils.NormalizeUsername(from.first_name, from.last_name)
+    return StringUtils.NormalizeName(from.first_name, from.last_name)
   },
 
   get_reply_to_username: (ctx: Context) => {
@@ -30,7 +30,7 @@ export const ContextUtils = {
     const reply_to_user = reply_to.from
     if (!reply_to_user) return
 
-    return StringUtils.NormalizeUsername(reply_to_user.first_name, reply_to_user.last_name)
+    return StringUtils.NormalizeName(reply_to_user.first_name, reply_to_user.last_name)
   },
 
   get_text: (ctx: Context) => {
@@ -51,7 +51,7 @@ export const ContextUtils = {
   },
 
   get_context: (ctx: Context): ContextArgs => {
-    const username = ContextUtils.get_username(ctx)!
+    const username = ContextUtils.get_name(ctx)!
     const text = ContextUtils.get_text(ctx)!
 
     const reply_to_username = ContextUtils.get_reply_to_username(ctx)
@@ -75,8 +75,8 @@ export const ContextUtils = {
     return {
       telegram_id: from.id,
       username: from.username ? from.username : 'no_username',
-      first_name: StringUtils.NormalizeUsername(from.first_name),
-      last_name: from.last_name ? StringUtils.NormalizeUsername(from.last_name) : undefined,
+      first_name: StringUtils.NormalizeName(from.first_name),
+      last_name: from.last_name ? StringUtils.NormalizeName(from.last_name) : undefined,
     }
   },
 
@@ -93,9 +93,9 @@ export const ContextUtils = {
     return {
       telegram_id: reply_to_user.id,
       username: reply_to_user.username ? reply_to_user.username : 'no_username',
-      first_name: StringUtils.NormalizeUsername(reply_to_user.first_name),
+      first_name: StringUtils.NormalizeName(reply_to_user.first_name),
       last_name: reply_to_user.last_name
-        ? StringUtils.NormalizeUsername(reply_to_user.last_name)
+        ? StringUtils.NormalizeName(reply_to_user.last_name)
         : undefined,
     }
   },

@@ -1,6 +1,4 @@
-import * as process from 'process'
-
-import { Composer, Context, InputFile } from 'grammy'
+import { Composer, Context } from 'grammy'
 
 import { ContextUtils } from '@/helpers/context.utils'
 import { Logger } from '@/helpers/logger.utils'
@@ -14,7 +12,7 @@ composer.command('reset', async (ctx) => {
 
   HistoryUtils.reset_history()
 
-  Logger.debug(`Bot has been reset by: ${ContextUtils.get_username(ctx)}`, 'RESET')
+  Logger.debug(`bot has been reset by: ${ContextUtils.get_username(ctx)}`, 'reset.command')
 
   return ctx.reply('✅ Bot resetado com sucesso!', { reply_to_message_id: ctx.message?.message_id })
 })

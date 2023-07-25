@@ -8,11 +8,10 @@ import { Logger } from '@/helpers/logger.utils'
 
 import { MyContext } from '@/bot/core/context'
 import Commands from '@/bot/commands'
-
-import { gpt } from '@/bot/middlewares/gpt.middleware'
 import { history } from '@/bot/middlewares/history.middleware'
 import { group } from '@/bot/middlewares/group.middleware'
 import { data } from '@/bot/middlewares/data.middleware'
+import { gpt } from '@/bot/middlewares/gpt.middleware'
 
 export class Bot extends BotGrammy<MyContext> {
   constructor() {
@@ -26,16 +25,16 @@ export class Bot extends BotGrammy<MyContext> {
     this.use(hydrate())
     this.use(Commands)
 
-    this.on('msg', group, data)
-    this.on('message:text', history, gpt)
+    this.on('message', group)
+    this.on('message:text', history, gpt, data)
 
     this.catch((err) => Logger.error(err.message, 'BOT'))
   }
 
   async start() {
     await this.api.setMyCommands([
-      { command: 'imagine', description: 'Gerar imagem com texto' },
-      { command: 'variation', description: 'Gerar variação de imagem' },
+      { command: 'imagine', description: 'Generate image' },
+      { command: 'variation', description: 'Generate image variation' },
     ])
 
     await super.start({

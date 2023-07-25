@@ -10,7 +10,6 @@ const composer = new Composer<MyContext>()
 
 composer.use(start)
 composer.use(gpt)
-composer.use(gpt)
 composer.use(reset)
 
 export default composer

@@ -13,19 +13,18 @@ export const StringUtils = {
               .replace(/[\u0300-\u036f]/g, '')
               .replace(/\s+/g, ' ')
               .replace(/(\r\n|\n|\r)/gm, '')
+              .replace(/[^a-zA-Z0-9_-]/g, '_')
               .trim()}`
           : ''
       )
-      //.replace(/[^a-zA-Z0-9 ]/g, '')
-      .slice(0, 20)
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
       .trim()
-    //.toLowerCase()
+      .slice(0, 20)
+      .toLowerCase()
 
     // check if username is empty
     if (username === ' ') return 'no_username'
     if (username.trim() === '') return 'no_username'
-
-    //return username.replace(/[^a-zA-Z0-9_-]/g, '_')
 
     return username
   },
@@ -47,7 +46,6 @@ export const StringUtils = {
               .trim()}`
           : ''
       )
-      //.replace(/[^a-zA-Z0-9 ]/g, '')
       .slice(0, 20)
       .trim()
 
@@ -55,7 +53,8 @@ export const StringUtils = {
     if (name === ' ') return 'no_name'
     if (name.trim() === '') return 'no_name'
 
-    return name
+    // capitalize first letter
+    return name.charAt(0).toUpperCase() + name.slice(1)
   },
 
   NormalizeText: (text: string) => {
@@ -64,6 +63,7 @@ export const StringUtils = {
       .replace(/\s+/g, ' ')
       .replace(/(\r\n|\n|\r)/gm, '')
       .trim()
+
     return source.slice(0, 500)
   },
 

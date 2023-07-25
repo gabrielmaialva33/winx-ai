@@ -26,7 +26,7 @@ composer.command('imagine', async (ctx) => {
       caption: text,
     })
   } catch (_) {
-    return ctx.reply('Desculpa! 🥺 Não vai rolar.', {
+    return ctx.reply('Desculpa! 🥺 Não posso imaginar isso.', {
       reply_to_message_id: ctx.message?.message_id,
     })
   }
@@ -47,18 +47,18 @@ composer.command('variation', async (ctx) => {
     const response = await IA.variation(file_path)
 
     if (response.status !== 200)
-      return ctx.reply('Cannot gererate image', { reply_to_message_id: ctx.message?.message_id })
+      return ctx.reply('cannot gererate image', { reply_to_message_id: ctx.message?.message_id })
 
     await ctx.api.sendChatAction(ctx.chat?.id, 'upload_photo')
 
     if (!response.data.data[0].url)
-      return ctx.reply('No image found', { reply_to_message_id: ctx.message?.message_id })
+      return ctx.reply('no image found', { reply_to_message_id: ctx.message?.message_id })
 
     return ctx.replyWithPhoto(new InputFile({ url: response.data.data[0].url }), {
       reply_to_message_id: ctx.message?.message_id,
     })
   } catch (e) {
-    return ctx.reply('Desculpa! 🥺 Não vai rolar.', {
+    return ctx.reply('Desculpa! 🥺 Não posso imaginar isso.', {
       reply_to_message_id: ctx.message?.message_id,
     })
   }

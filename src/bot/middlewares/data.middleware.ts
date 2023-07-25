@@ -1,7 +1,5 @@
 import { MiddlewareFn } from 'grammy'
 import { StringUtils } from '@/helpers/string.utils'
-import * as fs from 'fs'
-import { HistoryUtils } from '@/helpers/history.utils'
 
 export const data: MiddlewareFn = async (ctx, next) => {
   if (!ctx.chat || !ctx.message) return next()
@@ -31,10 +29,6 @@ export const data: MiddlewareFn = async (ctx, next) => {
       text: ctx.message.reply_to_message?.text,
     },
   }
-
-  //console.log({ context, replay: context.reply_to.user })
-
-  //HistoryUtils.write_context(JSON.stringify(context, null, 2))
 
   return next()
 }

@@ -3,7 +3,6 @@ import { UserBot } from '@/bot/core/user.bot'
 import { Logger } from '@/helpers/logger.utils'
 import { Knex } from '@/lib/objection'
 import * as fs from 'fs'
-import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum } from 'openai'
 
 const User = new UserBot()
 

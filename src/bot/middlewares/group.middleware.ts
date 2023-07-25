@@ -22,14 +22,14 @@ export const group: MiddlewareFn = async (ctx, next) => {
           .then(() =>
             ctx
               .leaveChat()
-              .catch(() => Logger.error(`Bot is not member of the chat`, 'group.middleware'))
+              .catch(() => Logger.error(`bot is not member of the chat`, 'group.middleware'))
           )
       else
         await ctx
           .reply(
             'Desculpa, mas eu só falo no grupo Club das Winx! 🥺 🌸 Fale com o @mrootx para me adicionar em outro grupo.'
           )
-          .catch(() => Logger.error(`Bot is not member of the chat`, 'group.middleware'))
+          .catch(() => Logger.error(`bot is not member of the chat`, 'group.middleware'))
     }
 
   return next()

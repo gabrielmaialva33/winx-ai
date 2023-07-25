@@ -14,9 +14,11 @@ composer.command('start', async (ctx) => {
   if (!ctx.chat?.id) return ctx.reply('❌ Erro ao iniciar o bot!')
   if (ctx.chat.type === 'supergroup') return
 
-  Logger.debug(`Bot has been started by: ${ContextUtils.get_username(ctx)}`, 'START')
+  Logger.debug(`bot has been started by: ${ContextUtils.get_username(ctx)}`, 'start.command')
 
-  await ctx.api.sendChatAction(ctx.chat.id, 'typing')
+  await ctx.api.sendChatAction(ctx.chat.id, 'typing', {
+    message_thread_id: ctx.message?.message_id,
+  })
 
   const file = new InputFile(process.cwd() + '/src/assets/winx.gif')
   return ctx.replyWithAnimation(file, {

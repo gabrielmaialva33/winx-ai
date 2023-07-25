@@ -63,12 +63,12 @@ class OpenAI extends OpenAIApi {
     const n = this.n[model][Math.floor(Math.random() * this.n[model].length)]
 
     return {
-      model: 'text-davinci-002',
+      model: 'text-davinci-003',
       temperature: 1,
       max_tokens: 256,
-      frequency_penalty: Math.random() * (2.0 - 1.5) + 1.5,
-      presence_penalty: Math.random() * (2.0 - 1.3) + 1.3,
-      n: 5,
+      frequency_penalty: 2,
+      presence_penalty: 1.5,
+      n: 3,
     } as CreateCompletionRequest
   }
 

@@ -15,11 +15,11 @@ class OpenAI extends OpenAIApi {
 
   private CompletionRequest(): CreateCompletionRequest {
     return {
-      model: 'text-davinci-003',
-      temperature: 0.6,
+      model: 'text-davinci-002',
+      temperature: 1,
       max_tokens: 300,
-      frequency_penalty: 0.5,
-      presence_penalty: 0.1,
+      frequency_penalty: 1.5,
+      presence_penalty: 1.1,
       n: 1,
     }
   }

@@ -19,7 +19,7 @@ class OpenAI extends OpenAIApi {
       temperature: 0.6,
       max_tokens: 300,
       frequency_penalty: 0.5,
-      presence_penalty: 0,
+      presence_penalty: 0.1,
       n: 1,
     }
   }

@@ -18,9 +18,9 @@ class OpenAI extends OpenAIApi {
       model: 'text-davinci-002',
       temperature: 1,
       max_tokens: 70,
-      frequency_penalty: 2,
-      presence_penalty: 2,
-      n: 2,
+      frequency_penalty: 1.5,
+      presence_penalty: 0.5,
+      n: 1,
     }
   }
 

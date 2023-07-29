@@ -5,9 +5,7 @@ coverage
 .DS_STORE
 .env
 !tmp/.gitkeep
-tmp/history.gpt.txt
-tmp/system.gpt.txt
-tmp/main.gpt.txt
+tmp/*.txt
 .idea/
 dist
 src/database/database.sqlite

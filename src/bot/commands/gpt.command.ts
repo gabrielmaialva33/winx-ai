@@ -9,8 +9,16 @@ const composer = new Composer<MyContext>()
 
 composer.command('imagine', async (ctx) => {
   try {
-    const text = StringUtils.RemoveIncludes(ctx.message!.text, ['/imagine', '/imagine@winx_ia_bot', 'imagine', '@winx_ia_bot', 'winx_ia_bot', '/imagine@winx_ia_bot'])
+    const text = StringUtils.RemoveIncludes(ctx.message!.text, [
+      '/imagine',
+      '/imagine@winx_ia_bot',
+      'imagine',
+      '@winx_ia_bot',
+      'winx_ia_bot',
+      '/imagine@winx_ia_bot',
+    ])
     if (!text) return
+    if (ctx.chat.type !== 'group') return
 
     const response = await IA.imagine(StringUtils.RemoveBreakLines(text))
     if (response.status !== 200)
@@ -34,6 +42,7 @@ composer.command('imagine', async (ctx) => {
 
 composer.command('variation', async (ctx) => {
   if (!ctx.message?.reply_to_message?.photo) return
+  if (ctx.chat.type !== 'group') return
 
   try {
     const file_id = ctx.message?.reply_to_message?.photo?.pop()?.file_id

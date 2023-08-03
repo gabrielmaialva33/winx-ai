@@ -45,8 +45,7 @@ export class UserBot {
         user.firstName &&
         user.bot === false &&
         parse_text &&
-        parse_text !== ' ' &&
-        parse_text !== '  ' &&
+        parse_text.trim() !== '' &&
         parse_text.length > 2 &&
         !StringUtils.TextInclude(parse_text, ['winx', '/'])
       ) {

@@ -1,13 +1,30 @@
 import { MiddlewareFn } from 'grammy'
-import { Logger } from '@/helpers/logger.utils'
+import { fmt, italic } from '@grammyjs/parse-mode'
 
+import { MyContext } from '@/bot/core/context'
+
+import { Logger } from '@/helpers/logger.utils'
 import { ContextUtils } from '@/helpers/context.utils'
 import { StringUtils } from '@/helpers/string.utils'
-import { GptUtils } from '@/helpers/gpt.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
 import { IA } from '@/bot/plugins/gpt.plugin'
+import { GptUtils } from '@/helpers/gpt.utils'
 
-export const gpt: MiddlewareFn = async (ctx, next) => {
+const response = async (ctx: MyContext, input: any, username: string) => {
+  if (!ctx.chat || !ctx.message || !ctx.message.text) return null
+  await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {
+    message_thread_id: ctx.message.message_id,
+  })
+
+  const response = await IA.complete(input, username)
+  if (response.data.choices.length === 0) return null
+
+  const choices = response.data.choices
+  const random = Math.floor(Math.random() * choices.length)
+  return choices[random].text
+}
+
+export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
   try {
     if (!ctx.chat || !ctx.message || !ctx.message.text) return next()
 
@@ -16,43 +33,27 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
 
     const { username, reply_to_username, reply_to_text } = ContextUtils.get_context(ctx)
 
-    // if text contains winx and not contains /imagine or /variation
-    if (
-      StringUtils.TextInclude(text, ['winx']) &&
-      !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])
-    ) {
-      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
+    const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
+    if (StringUtils.TextInclude(text, ['winx']) && !StringUtils.TextInclude(text, ['/'])) {
+      Logger.debug(`winx detected: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
-      const response = await IA.complete(input, username)
-      if (response.data.choices.length === 0) return next()
-
-      const choices = response.data.choices
-      const random = Math.floor(Math.random() * choices.length)
-      const random_choice = choices[random].text
+      const random_choice = await response(ctx, input, username)
       if (!random_choice) return next()
 
       const history = HistoryUtils.build_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(random_choice + '\n', {
+      // reply in italic to the message that was replied to
+      return ctx.replyFmt(fmt`${italic(random_choice)}`, {
         reply_to_message_id: ctx.message.message_id,
       })
     }
 
-    // if bot is mentioned
     if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
-      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
+      Logger.debug(`bot replied: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
-
-      const response = await IA.complete(input, username)
-      if (response.data.choices.length === 0) return next()
-
-      const choices = response.data.choices
-      const random = Math.floor(Math.random() * choices.length)
-      const random_choice = choices[random].text
+      const random_choice = await response(ctx, input, username)
       if (!random_choice) return next()
 
       const history = HistoryUtils.build_reply_gpt_history(input, random_choice, username)
@@ -63,19 +64,10 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       })
     }
 
-    // random reply
-    if (Math.random() < 0.009 && !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])) {
-      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
+    if (Math.random() < 0.009 && !StringUtils.TextInclude(text, ['/'])) {
+      Logger.debug(`random: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
-      Logger.info(input, 'random.gpt.middleware')
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
-
-      const response = await IA.complete(input, username)
-      if (response.data.choices.length === 0) return next()
-
-      const choices = response.data.choices
-      const random = Math.floor(Math.random() * choices.length)
-      const random_choice = choices[random].text
+      const random_choice = await response(ctx, input, username)
       if (!random_choice) return next()
 
       const history = HistoryUtils.build_gpt_history(input, random_choice, username)
@@ -84,26 +76,10 @@ export const gpt: MiddlewareFn = async (ctx, next) => {
       return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
     }
 
-    // if user send message on direct to bot
-    if (
-      ctx.chat.type === 'private' &&
-      !StringUtils.TextInclude(text, ['/imagine', '/variation', '/'])
-    ) {
-      const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
-      Logger.info(input, 'private.gpt.middleware')
+    if (ctx.chat.type === 'private' && !StringUtils.TextInclude(text, ['/'])) {
+      Logger.info(`private: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
       return ctx.reply('🤖', { reply_to_message_id: ctx.message.message_id })
-
-      // await ctx.api.sendChatAction(ctx.chat!.id, 'typing')
-      // const response = await IA.complete(input, username)
-      // if (response.data.choices.length === 0) return next()
-      // const choices = response.data.choices
-      // const random = Math.floor(Math.random() * choices.length)
-      // const random_choice = choices[random].text
-      // if (!random_choice) return next()
-      // const history = HistoryUtils.build_reply_gpt_history(input, random_choice, username)
-      // HistoryUtils.write_history(history)
-      // return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
     }
 
     return next()

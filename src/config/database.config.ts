@@ -1,4 +1,5 @@
 import { Knex } from 'knex'
+import * as process from 'process'
 
 import { LogKnex } from '@/helpers/logger.utils'
 import { Env } from '@/config/env'

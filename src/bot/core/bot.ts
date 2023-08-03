@@ -1,7 +1,7 @@
 import Env from '@/config/env'
 
 import { Bot as BotGrammy } from 'grammy'
-import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
+import { hydrateReply } from '@grammyjs/parse-mode'
 import { hydrateFiles } from '@grammyjs/files'
 import { hydrate } from '@grammyjs/hydrate'
 import { Logger } from '@/helpers/logger.utils'
@@ -15,24 +15,22 @@ import { gpt } from '@/bot/middlewares/gpt.middleware'
 
 export class Bot extends BotGrammy<MyContext> {
   constructor() {
-    super(Env.BOT_TOKEN, {
-      client: { canUseWebhookReply: () => false },
-    })
-    this.api.config.use(parseMode('HTML'))
+    super(Env.BOT_TOKEN, { client: { canUseWebhookReply: () => false } })
     this.api.config.use(hydrateFiles(Env.BOT_TOKEN))
 
-    this.use(hydrateReply)
     this.use(hydrate())
+    this.use(hydrateReply)
     this.use(Commands)
 
     this.on('message', group)
     this.on('message:text', history, gpt, data)
 
-    this.catch((err) => Logger.error(err.message, 'BOT'))
+    this.catch((err) => Logger.error(err.message, 'bot.catch'))
   }
 
   async start() {
     await this.api.setMyCommands([
+      { command: 'start', description: 'Start bot' },
       { command: 'imagine', description: 'Generate image' },
       { command: 'variation', description: 'Generate image variation' },
     ])

@@ -1,27 +1,30 @@
 import * as fs from 'fs'
+import * as process from 'process'
 import jimp from 'jimp'
-import Env from '@/config/env'
-import { Configuration, OpenAIApi } from 'openai'
-import { Logger } from '@/helpers/logger.utils'
 import { DateTime } from 'luxon'
-import { StringUtils } from '@/helpers/string.utils'
-import { HistoryUtils } from '@/helpers/history.utils'
+
+import { Configuration, OpenAIApi } from 'openai'
 import { CreateCompletionRequest } from 'openai/api'
 
+import Env from '@/config/env'
+
+import { Logger } from '@/helpers/logger.utils'
+import { StringUtils } from '@/helpers/string.utils'
+import { HistoryUtils } from '@/helpers/history.utils'
+
 class OpenAI extends OpenAIApi {
-  constructor() {
-    super(new Configuration({ apiKey: Env.OPENAI_TOKEN }))
+  private config: CreateCompletionRequest = {
+    model: 'text-davinci-002',
+    temperature: 1,
+    max_tokens: 256,
+    frequency_penalty: 1,
+    presence_penalty: 1.5,
+    n: 1,
+    stop: ['||'],
   }
 
-  private CompletionRequest(): CreateCompletionRequest {
-    return {
-      model: 'text-davinci-002',
-      temperature: 1,
-      max_tokens: 256,
-      frequency_penalty: 1,
-      presence_penalty: 1.5,
-      n: 1,
-    }
+  constructor() {
+    super(new Configuration({ apiKey: Env.OPENAI_TOKEN }))
   }
 
   public async complete(text: string, username: string) {
@@ -42,7 +45,7 @@ class OpenAI extends OpenAIApi {
       `context: ${JSON.stringify(StringUtils.InfoText(main + history + text))}`,
       'ai.complete'
     )
-    Logger.info(`config: ${JSON.stringify(this.CompletionRequest())}`, 'ai.complete')
+    Logger.info(`config: ${JSON.stringify(this.config)}`, 'ai.complete')
 
     const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx(${username}):||`)
 
@@ -51,56 +54,15 @@ class OpenAI extends OpenAIApi {
 
       await HistoryUtils.populate_history()
 
-      return this.createCompletion(
-        {
-          prompt,
-          ...this.CompletionRequest(),
-          stop: ['||'],
-        },
-        { timeout: 30000 }
-      )
+      return this.createCompletion({ prompt, ...this.config }, { timeout: 30000 })
     }
 
-    return this.createCompletion(
-      {
-        prompt,
-        ...this.CompletionRequest(),
-        stop: ['||'],
-      },
-      { timeout: 30000 }
-    )
-  }
-
-  public async opinion(text: string) {
-    const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
-    const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
-
-    Logger.info(`context: ${JSON.stringify(StringUtils.InfoText(main + history))}`, 'ai.opinion')
-    Logger.info(`config: ${JSON.stringify(this.CompletionRequest())}`, 'ai.complete')
-
-    const prompt = StringUtils.RemoveBreakLines(main + history + text + `Winx:||`)
-
-    if (StringUtils.CountTokens(prompt) > 4096) {
-      Logger.error('tokens limit exceeded!', 'ai.complete')
-
-      await HistoryUtils.populate_history()
-
-      return this.createCompletion({
-        prompt,
-        stop: ['||'],
-        ...this.CompletionRequest(),
-      })
-    }
-
-    return this.createCompletion({
-      prompt,
-      stop: ['||'],
-      ...this.CompletionRequest(),
-    })
+    return this.createCompletion({ prompt, ...this.config }, { timeout: 30000 })
   }
 
   public async imagine(text: string, n?: number) {
     Logger.info(`imagining text: ${text}`, 'ai.imagine')
+
     return this.createImage({
       prompt: text,
       n: n || 1,
@@ -116,7 +78,7 @@ class OpenAI extends OpenAIApi {
     const image = await jimp.read(`${path}.png`)
     await image.resize(512, 512).writeAsync(`${path}.png`)
 
-    Logger.info(`variating image: ${path}.png`, 'ai.variation')
+    Logger.info(`variation image: ${path}.png`, 'ai.variation')
 
     return this.createImageVariation(fs.createReadStream(`${path}.png`) as any, 1, '512x512', 'url')
   }

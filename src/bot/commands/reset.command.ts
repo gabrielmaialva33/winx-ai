@@ -7,8 +7,13 @@ import { HistoryUtils } from '@/helpers/history.utils'
 const composer = new Composer<Context>()
 
 composer.command('reset', async (ctx) => {
-  if (!ctx.chat?.id) return ctx.reply('❌ Erro ao iniciar o bot!')
-  if (ctx.chat.type === 'supergroup') return
+  if (!ctx.chat?.id)
+    return ctx.reply('❌ erro ao resetar o bot', { reply_to_message_id: ctx.message?.message_id })
+
+  if (ctx.chat.type === 'supergroup')
+    return ctx.reply('❌ o bot não pode ser resetado em grupos', {
+      reply_to_message_id: ctx.message?.message_id,
+    })
 
   HistoryUtils.reset_history()
 

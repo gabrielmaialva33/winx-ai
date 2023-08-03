@@ -19,7 +19,7 @@ export const history: MiddlewareFn = async (ctx, next) => {
       ctx.message.reply_to_message?.from?.is_bot ||
       !ctx.message.from?.first_name ||
       StringUtils.TextInclude(ctx.message!.text!, ['winx', '/']) ||
-      !permitted.includes(ctx.chat.id.toString())
+      (!permitted.includes(ctx.chat.id.toString()) && ctx.chat.type === 'private')
     ) {
       Logger.debug('ignoring message', 'history.middleware')
       return next()

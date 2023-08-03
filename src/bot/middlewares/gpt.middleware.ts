@@ -59,7 +59,7 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       const history = HistoryUtils.build_reply_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(random_choice + '\n', {
+      return ctx.replyFmt(fmt`${italic(random_choice)}`, {
         reply_to_message_id: ctx.message.message_id,
       })
     }
@@ -73,7 +73,9 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       const history = HistoryUtils.build_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
 
-      return ctx.reply(random_choice + '\n', { reply_to_message_id: ctx.message.message_id })
+      return ctx.replyFmt(fmt`${italic(random_choice)}`, {
+        reply_to_message_id: ctx.message.message_id,
+      })
     }
 
     if (ctx.chat.type === 'private' && !StringUtils.TextInclude(text, ['/'])) {

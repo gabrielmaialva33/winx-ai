@@ -13,6 +13,8 @@ import { GptUtils } from '@/helpers/gpt.utils'
 const response = async (ctx: MyContext, input: any, username: string) => {
   if (!ctx.chat || !ctx.message || !ctx.message.text) return null
 
+  await ctx.api.sendChatAction(ctx.chat.id, 'typing')
+
   const response = await IA.complete(input, username)
   if (response.data.choices.length === 0) return null
 
@@ -41,10 +43,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       const history = HistoryUtils.build_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
 
-      await ctx.api.sendChatAction(ctx.chat.id, 'typing', {
-        message_thread_id: ctx.message.message_id,
-      })
-
       // reply in italic to the message that was replied to
       return ctx.replyFmt(fmt`${italic(random_choice)}`, {
         reply_to_message_id: ctx.message.message_id,
@@ -60,10 +58,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       const history = HistoryUtils.build_reply_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
 
-      await ctx.api.sendChatAction(ctx.chat.id, 'typing', {
-        message_thread_id: ctx.message.message_id,
-      })
-
       return ctx.replyFmt(fmt`${italic(random_choice)}`, {
         reply_to_message_id: ctx.message.message_id,
       })
@@ -77,10 +71,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
 
       const history = HistoryUtils.build_gpt_history(input, random_choice, username)
       HistoryUtils.write_history(history)
-
-      await ctx.api.sendChatAction(ctx.chat.id, 'typing', {
-        message_thread_id: ctx.message.message_id,
-      })
 
       return ctx.replyFmt(fmt`${italic(random_choice)}`, {
         reply_to_message_id: ctx.message.message_id,

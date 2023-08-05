@@ -13,6 +13,10 @@ import { GptUtils } from '@/helpers/gpt.utils'
 const response = async (ctx: MyContext, input: any, username: string) => {
   if (!ctx.chat || !ctx.message || !ctx.message.text) return null
 
+  await ctx.api.sendChatAction(ctx.chat.id, 'typing', {
+    message_thread_id: ctx.message.message_id,
+  })
+
   const response = await IA.complete(input, username)
   if (response.data.choices.length === 0) return null
 
@@ -35,8 +39,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
     if (StringUtils.TextInclude(text, ['winx']) && !StringUtils.TextInclude(text, ['/'])) {
       Logger.debug(`winx detected: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {})
-
       const random_choice = await response(ctx, input, username)
       if (!random_choice) return next()
 
@@ -52,8 +54,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
     if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
       Logger.debug(`bot replied: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {})
-
       const random_choice = await response(ctx, input, username)
       if (!random_choice) return next()
 
@@ -67,8 +67,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
 
     if (Math.random() < 0.009 && !StringUtils.TextInclude(text, ['/'])) {
       Logger.debug(`random: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
-
-      await ctx.api.sendChatAction(ctx.chat!.id, 'typing', {})
 
       const random_choice = await response(ctx, input, username)
       if (!random_choice) return next()

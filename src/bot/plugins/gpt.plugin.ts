@@ -18,7 +18,7 @@ class OpenAI extends OpenAIApi {
     temperature: 1,
     max_tokens: 156,
     frequency_penalty: 1,
-    presence_penalty: 1.5,
+    presence_penalty: 1,
     n: 1,
     stop: ['||'],
   }

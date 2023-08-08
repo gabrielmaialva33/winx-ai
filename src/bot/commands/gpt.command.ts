@@ -1,9 +1,10 @@
 import { Composer, InputFile } from 'grammy'
-
+import { fmt, italic, code } from '@grammyjs/parse-mode'
 import { StringUtils } from '@/helpers/string.utils'
 import { IA } from '@/bot/plugins/gpt.plugin'
 
 import { MyContext } from '@/bot/core/context'
+import { Logger } from '@/helpers/logger.utils'
 
 const composer = new Composer<MyContext>()
 
@@ -94,9 +95,20 @@ composer.command('gpt', async (ctx) => {
   if (!response.data.choices[0].message || !response.data.choices[0].message.content)
     return ctx.reply('no text found', { reply_to_message_id: ctx.message?.message_id })
 
-  return ctx.reply(response.data.choices[0].message.content, {
-    reply_to_message_id: ctx.message?.message_id,
-  })
+  if (response.data.choices[0].message.content.includes('```')) {
+    Logger.info('sending code', 'gpt.command')
+
+    const beforeContent = response.data.choices[0].message.content.split('```')[0]
+    const codeContent = response.data.choices[0].message.content.split('```')[1]
+    const afterContent = response.data.choices[0].message.content.split('```')[2]
+
+    return ctx.replyFmt(fmt`${beforeContent}${code(codeContent)}${afterContent}`, {
+      reply_to_message_id: ctx.message?.message_id,
+    })
+  } else
+    return ctx.reply(response.data.choices[0].message.content, {
+      reply_to_message_id: ctx.message?.message_id,
+    })
 })
 
 export default composer

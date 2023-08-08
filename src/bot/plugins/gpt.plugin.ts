@@ -14,9 +14,9 @@ import { HistoryUtils } from '@/helpers/history.utils'
 
 class OpenAI extends OpenAIApi {
   private config: CreateCompletionRequest = {
-    model: 'text-davinci-003',
+    model: 'text-davinci-002',
     temperature: 1,
-    max_tokens: 256,
+    max_tokens: 156,
     frequency_penalty: 1,
     presence_penalty: 1,
     n: 1,

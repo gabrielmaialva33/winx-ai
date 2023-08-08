@@ -4,7 +4,7 @@ import jimp from 'jimp'
 import { DateTime } from 'luxon'
 
 import { Configuration, OpenAIApi } from 'openai'
-import { CreateCompletionRequest } from 'openai/api'
+import { ChatCompletionRequestMessageRoleEnum, CreateCompletionRequest } from 'openai/api'
 
 import Env from '@/config/env'
 
@@ -86,15 +86,20 @@ class OpenAI extends OpenAIApi {
   public async gpt3(text: string) {
     Logger.info(`gpt3 text: ${text}`, 'ai.gpt3')
 
-    return this.createCompletion({
-      model: 'text-davinci-003',
-      prompt: text,
-      max_tokens: 500,
+    return this.createChatCompletion({
+      model: 'gpt-4',
       temperature: 1,
+      max_tokens: 256,
       top_p: 1,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.6,
-      stop: ['\n'],
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      messages: [
+        {
+          role: ChatCompletionRequestMessageRoleEnum.System,
+          content: 'Você é a Winx AI 🤖 que responde os usuários do grupo Club das Winx 🧚‍♀️',
+        },
+        { role: ChatCompletionRequestMessageRoleEnum.User, content: text },
+      ],
     })
   }
 }

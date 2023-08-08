@@ -18,7 +18,7 @@ composer.command('imagine', async (ctx) => {
       '/imagine@winx_ia_bot',
     ])
     if (!text) return
-    if (ctx.chat.type !== 'group') return
+    if (!['group', 'supergroup'].includes(ctx.chat.type)) return
 
     const response = await IA.imagine(StringUtils.RemoveBreakLines(text))
     if (response.status !== 200)
@@ -42,7 +42,7 @@ composer.command('imagine', async (ctx) => {
 
 composer.command('variation', async (ctx) => {
   if (!ctx.message?.reply_to_message?.photo) return
-  if (ctx.chat.type !== 'group') return
+  if (!['group', 'supergroup'].includes(ctx.chat.type)) return
 
   try {
     const file_id = ctx.message?.reply_to_message?.photo?.pop()?.file_id
@@ -84,16 +84,16 @@ composer.command('gpt', async (ctx) => {
       '/gpt@winx_ia_bot',
     ])
     if (!text) return
-    if (ctx.chat.type !== 'group') return
+    if (!['group', 'supergroup'].includes(ctx.chat.type)) return
 
     const response = await IA.gpt3(StringUtils.RemoveBreakLines(text))
     if (response.status !== 200)
       return ctx.reply('cannot generate text', { reply_to_message_id: ctx.message?.message_id })
 
-    if (!response.data.choices[0].text)
+    if (!response.data.choices[0].message || !response.data.choices[0].message.content)
       return ctx.reply('no text found', { reply_to_message_id: ctx.message?.message_id })
 
-    return ctx.reply(response.data.choices[0].text, {
+    return ctx.reply(response.data.choices[0].message.content, {
       reply_to_message_id: ctx.message?.message_id,
     })
   } catch (_) {

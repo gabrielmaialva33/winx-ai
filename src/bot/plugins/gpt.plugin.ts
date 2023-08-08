@@ -82,6 +82,21 @@ class OpenAI extends OpenAIApi {
 
     return this.createImageVariation(fs.createReadStream(`${path}.png`) as any, 1, '512x512', 'url')
   }
+
+  public async gpt3(text: string) {
+    Logger.info(`gpt3 text: ${text}`, 'ai.gpt3')
+
+    return this.createCompletion({
+      model: 'text-davinci-003',
+      prompt: text,
+      max_tokens: 500,
+      temperature: 1,
+      top_p: 1,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.6,
+      stop: ['\n'],
+    })
+  }
 }
 
 export const IA = new OpenAI()

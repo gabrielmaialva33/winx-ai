@@ -74,33 +74,29 @@ composer.command('variation', async (ctx) => {
 })
 
 composer.command('gpt', async (ctx) => {
-  try {
-    const text = StringUtils.RemoveIncludes(ctx.message!.text, [
-      '/gpt',
-      '/gpt@winx_ia_bot',
-      'gpt',
-      '@winx_ia_bot',
-      'winx_ia_bot',
-      '/gpt@winx_ia_bot',
-    ])
-    if (!text) return
-    if (!['group', 'supergroup'].includes(ctx.chat.type)) return
+  const text = StringUtils.RemoveIncludes(ctx.message!.text, [
+    '/gpt',
+    '/gpt@winx_ia_bot',
+    'gpt',
+    '@winx_ia_bot',
+    'winx_ia_bot',
+    '/gpt@winx_ia_bot',
+  ])
+  if (!text) return
+  if (!['group', 'supergroup'].includes(ctx.chat.type)) return
 
-    const response = await IA.gpt3(StringUtils.RemoveBreakLines(text))
-    if (response.status !== 200)
-      return ctx.reply('cannot generate text', { reply_to_message_id: ctx.message?.message_id })
+  await ctx.api.sendChatAction(ctx.chat?.id, 'typing')
 
-    if (!response.data.choices[0].message || !response.data.choices[0].message.content)
-      return ctx.reply('no text found', { reply_to_message_id: ctx.message?.message_id })
+  const response = await IA.gpt3(StringUtils.RemoveBreakLines(text))
+  if (response.status !== 200)
+    return ctx.reply('cannot generate text', { reply_to_message_id: ctx.message?.message_id })
 
-    return ctx.reply(response.data.choices[0].message.content, {
-      reply_to_message_id: ctx.message?.message_id,
-    })
-  } catch (_) {
-    return ctx.reply('Desculpa! 🥺 Não posso imaginar isso.', {
-      reply_to_message_id: ctx.message?.message_id,
-    })
-  }
+  if (!response.data.choices[0].message || !response.data.choices[0].message.content)
+    return ctx.reply('no text found', { reply_to_message_id: ctx.message?.message_id })
+
+  return ctx.reply(response.data.choices[0].message.content, {
+    reply_to_message_id: ctx.message?.message_id,
+  })
 })
 
 export default composer

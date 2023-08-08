@@ -3,8 +3,12 @@ import * as process from 'process'
 import jimp from 'jimp'
 import { DateTime } from 'luxon'
 
-import { Configuration, OpenAIApi } from 'openai'
-import { ChatCompletionRequestMessageRoleEnum, CreateCompletionRequest } from 'openai/api'
+import {
+  Configuration,
+  OpenAIApi,
+  CreateCompletionRequest,
+  ChatCompletionRequestMessageRoleEnum,
+} from 'openai'
 
 import Env from '@/config/env'
 
@@ -87,7 +91,7 @@ class OpenAI extends OpenAIApi {
     Logger.info(`gpt3 text: ${text}`, 'ai.gpt3')
 
     return this.createChatCompletion({
-      model: 'gpt-4',
+      model: 'gpt-3.5-turbo',
       temperature: 1,
       max_tokens: 256,
       top_p: 1,

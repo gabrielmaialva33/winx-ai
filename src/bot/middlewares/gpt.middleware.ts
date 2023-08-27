@@ -16,9 +16,12 @@ const response = async (ctx: MyContext, input: any, username: string) => {
   await ctx.api.sendChatAction(ctx.chat.id, 'typing')
 
   const response = await IA.complete(input, username)
-  if (response.data.choices.length === 0) return null
 
-  const choices = response.data.choices
+  // @ts-ignore
+  if (response['choices'].length === 0) return null
+
+  // @ts-ignore
+  const choices = response['choices']
   const random = Math.floor(Math.random() * choices.length)
   return choices[random].text
 }

@@ -87,7 +87,6 @@ export class UserBot {
     await this.user.invoke(
       new Api.messages.SendMessage({
         peer: chatId,
-        replyToMsgId: reply_to,
         message: text,
       })
     )

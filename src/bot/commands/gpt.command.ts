@@ -1,5 +1,5 @@
 import { Composer, InputFile } from 'grammy'
-import { fmt, italic, code } from '@grammyjs/parse-mode'
+import { fmt, code } from '@grammyjs/parse-mode'
 import { StringUtils } from '@/helpers/string.utils'
 import { IA } from '@/bot/plugins/gpt.plugin'
 
@@ -22,15 +22,15 @@ composer.command('imagine', async (ctx) => {
     if (!['group', 'supergroup'].includes(ctx.chat.type)) return
 
     const response = await IA.imagine(StringUtils.RemoveBreakLines(text))
-    if (response.status !== 200)
+    if (response.created !== 1)
       return ctx.reply('cannot generate image', { reply_to_message_id: ctx.message?.message_id })
 
     await ctx.api.sendChatAction(ctx.chat?.id, 'upload_photo')
 
-    if (!response.data.data[0].url)
+    if (!response.data.length)
       return ctx.reply('no image found', { reply_to_message_id: ctx.message?.message_id })
 
-    return ctx.replyWithPhoto(new InputFile({ url: response.data.data[0].url }), {
+    return ctx.replyWithPhoto(new InputFile({ url: response.data[0].url! }), {
       reply_to_message_id: ctx.message?.message_id,
       caption: text,
     })
@@ -56,15 +56,12 @@ composer.command('variation', async (ctx) => {
     const file_path = await file.download()
     const response = await IA.variation(file_path)
 
-    if (response.status !== 200)
-      return ctx.reply('cannot generate image', { reply_to_message_id: ctx.message?.message_id })
-
     await ctx.api.sendChatAction(ctx.chat?.id, 'upload_photo')
 
-    if (!response.data.data[0].url)
+    if (!response.data[0].url)
       return ctx.reply('no image found', { reply_to_message_id: ctx.message?.message_id })
 
-    return ctx.replyWithPhoto(new InputFile({ url: response.data.data[0].url }), {
+    return ctx.replyWithPhoto(new InputFile({ url: response.data[0].url }), {
       reply_to_message_id: ctx.message?.message_id,
     })
   } catch (e) {
@@ -88,25 +85,23 @@ composer.command('gpt', async (ctx) => {
 
   await ctx.api.sendChatAction(ctx.chat?.id, 'typing')
 
-  const response = await IA.gpt3(StringUtils.RemoveBreakLines(text))
-  if (response.status !== 200)
-    return ctx.reply('cannot generate text', { reply_to_message_id: ctx.message?.message_id })
+  const response = await IA.gpt4(StringUtils.RemoveBreakLines(text))
 
-  if (!response.data.choices[0].message || !response.data.choices[0].message.content)
+  if (!response.choices[0].message || !response.choices[0].message.content)
     return ctx.reply('no text found', { reply_to_message_id: ctx.message?.message_id })
 
-  if (response.data.choices[0].message.content.includes('```')) {
+  if (response.choices[0].message.content.includes('```')) {
     Logger.info('sending code', 'gpt.command')
 
-    const beforeContent = response.data.choices[0].message.content.split('```')[0]
-    const codeContent = response.data.choices[0].message.content.split('```')[1]
-    const afterContent = response.data.choices[0].message.content.split('```')[2]
+    const beforeContent = response.choices[0].message.content.split('```')[0]
+    const codeContent = response.choices[0].message.content.split('```')[1]
+    const afterContent = response.choices[0].message.content.split('```')[2]
 
     return ctx.replyFmt(fmt`${beforeContent}${code(codeContent)}${afterContent}`, {
       reply_to_message_id: ctx.message?.message_id,
     })
   } else
-    return ctx.reply(response.data.choices[0].message.content, {
+    return ctx.reply(response.choices[0].message.content, {
       reply_to_message_id: ctx.message?.message_id,
     })
 })

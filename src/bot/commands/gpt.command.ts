@@ -1,5 +1,5 @@
 import { Composer, InputFile } from 'grammy'
-import { fmt, code } from '@grammyjs/parse-mode'
+import { code, fmt } from '@grammyjs/parse-mode'
 import { StringUtils } from '@/helpers/string.utils'
 import { IA } from '@/bot/plugins/gpt.plugin'
 

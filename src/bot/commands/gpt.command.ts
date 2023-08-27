@@ -71,14 +71,14 @@ composer.command('variation', async (ctx) => {
   }
 })
 
-composer.command('gpt', async (ctx) => {
+composer.command('gpt4', async (ctx) => {
   const text = StringUtils.RemoveIncludes(ctx.message!.text, [
-    '/gpt',
-    '/gpt@winx_ia_bot',
-    'gpt',
+    '/gpt4',
+    '/gpt4@winx_ia_bot',
+    'gpt4',
     '@winx_ia_bot',
     'winx_ia_bot',
-    '/gpt@winx_ia_bot',
+    '/gpt4@winx_ia_bot',
   ])
   if (!text) return
   if (!['group', 'supergroup'].includes(ctx.chat.type)) return

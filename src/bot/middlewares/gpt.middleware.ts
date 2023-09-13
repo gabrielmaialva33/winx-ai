@@ -9,21 +9,23 @@ import { StringUtils } from '@/helpers/string.utils'
 import { HistoryUtils } from '@/helpers/history.utils'
 import { IA } from '@/bot/plugins/gpt.plugin'
 import { GptUtils } from '@/helpers/gpt.utils'
+import LlamaPlugin from '@/bot/plugins/llama.plugin'
 
 const response = async (ctx: MyContext, input: any, username: string) => {
   if (!ctx.chat || !ctx.message || !ctx.message.text) return null
 
   await ctx.api.sendChatAction(ctx.chat.id, 'typing')
 
-  const response = await IA.complete(input, username)
-
-  // @ts-ignore
-  if (response['choices'].length === 0) return null
-
-  // @ts-ignore
-  const choices = response['choices']
-  const random = Math.floor(Math.random() * choices.length)
-  return choices[random].text
+  //const response = await IA.complete(input, username)
+  const response = await LlamaPlugin.generate(input, username)
+  console.log(response)
+  // // @ts-ignore
+  // if (response['choices'].length === 0) return null
+  //
+  // // @ts-ignore
+  // const choices = response['choices']
+  // const random = Math.floor(Math.random() * choices.length)
+  // return choices[random].text
 }
 
 export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {

@@ -53,6 +53,9 @@ dependencies:
   telegram:
     specifier: ^2.18.26
     version: 2.18.26
+  triple-beam:
+    specifier: ^1.4.1
+    version: 1.4.1
   winston:
     specifier: ^3.10.0
     version: 3.10.0
@@ -64,6 +67,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.6.0
     version: 20.6.0
+  '@types/triple-beam':
+    specifier: ^1.3.3
+    version: 1.3.3
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.7.0
     version: 6.7.0(@typescript-eslint/parser@6.7.0)(eslint@8.49.0)(typescript@5.2.2)
@@ -895,7 +901,6 @@ packages:
 
   /@types/triple-beam@1.3.3:
     resolution: {integrity: sha512-6tOUG+nVHn0cJbVp25JFayS5UE6+xlbcNF9Lo9mU7U0zk3zeUShZied4YEQZjy1JBF043FSkdXw8YkUJuVtB5g==}
-    dev: false
 
   /@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.49.0)(typescript@5.2.2):
     resolution: {integrity: sha512-TiZzBSJja/LbhNPvk6yc0JrX9XqhQ0hdh6M2svYfsHGejaKFIAGd9MQ+ERIMzLGlN/kZoYIgdxFV0PuljTKXag==}

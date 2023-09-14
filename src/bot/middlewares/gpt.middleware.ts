@@ -18,7 +18,8 @@ const response = async (ctx: MyContext, input: any, username: string) => {
 
   //const response = await IA.complete(input, username)
   const response = await LlamaPlugin.generate(input, username)
-  console.log(response)
+  return response
+  //console.log(response)
   // // @ts-ignore
   // if (response['choices'].length === 0) return null
   //

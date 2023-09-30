@@ -5,8 +5,11 @@ import { DateTime } from 'luxon'
 import { StringUtils } from '@/helpers/string.utils'
 
 class LlamaPlugin {
-  private readonly url = 'http://192.168.10.114:11434/api/generate'
-  private readonly headers = { 'Content-Type': 'application/json' }
+  //private readonly url = 'http://192.168.10.114:11434/api/generate'
+  private readonly url = 'https://ai.winx.mrootx.xyz/completion'
+  private readonly headers = {
+    'Content-Type': 'application/json',
+  }
   private context: any[]
 
   public async generate(text: string, username: string) {
@@ -23,45 +26,35 @@ class LlamaPlugin {
     //     DateTime.local({ zone: 'America/Sao_Paulo' }).toLocaleString(DateTime.TIME_SIMPLE)
     //   )
 
-    const prompt = StringUtils.RemoveBreakLines(text + `Winx(${username}):||`)
-    console.log(prompt)
-    const data = {
-      prompt,
-      model: 'falcon',
-      //model: 'llama2-uncensored', // 7B
-      //model: 'wizardlm-uncensored', // 13B
-      //model: 'wizard-vicuna-uncensored',
-      //model: 'orca-mini',
-      system: temp_main,
-      context: this.context,
-      //stop: `||`,
-    }
+    const prompt = StringUtils.RemoveBreakLines(temp_main + text + `Winx(${username}):||`)
+    const data = { prompt, n_predict: 128, temperature: 1, stop: ['||'] }
     try {
-      const response = await axios.post(this.url, data, { headers: this.headers })
+      const response = await axios.post(this.url, data, { headers: this.headers }) // 10 minutes timeout to generate
+      return response.data.content
 
-      // split by line
-      const lines = response.data.split('\n')
-      const last_line = lines[lines.length - 2]
+      // // split by line`
+      // const lines = response.data.split('\n')
+      // const last_line = lines[lines.length - 2]
 
-      const context = JSON.parse(last_line).context
-      this.context = context
+      // const context = JSON.parse(last_line).context
+      // this.context = context
 
-      // get only responses
-      const responses = lines.map((line: string) => {
-        try {
-          return JSON.parse(line).response
-        } catch {
-          return null
-        }
-      })
+      // // get only responses
+      // const responses = lines.map((line: string) => {
+      //   try {
+      //     return JSON.parse(line).response
+      //   } catch {
+      //     return null
+      //   }
+      // })
 
-      // remove null values
-      const filtered_responses = responses.filter(
-        (response: string) => response !== null || response !== undefined
-      )
-      // join all responses
-      const concatenated = filtered_responses.filter(Boolean).join('')
-      return concatenated
+      // // remove null values
+      // const filtered_responses = responses.filter(
+      //   (response: string) => response !== null || response !== undefined
+      // )
+      // // join all responses
+      // const concatenated = filtered_responses.filter(Boolean).join('')
+      // return concatenated
     } catch (error) {
       console.log(error)
       return null

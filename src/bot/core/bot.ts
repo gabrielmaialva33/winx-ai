@@ -22,7 +22,7 @@ export class Bot extends BotGrammy<MyContext> {
     this.use(hydrateReply)
     this.use(Commands)
 
-    this.on('message', group)
+    //this.on('message', group)
     this.on('message:text', history, gpt, data)
 
     this.catch((err) => Logger.error(err.message, 'bot.catch'))

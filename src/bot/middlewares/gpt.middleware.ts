@@ -86,7 +86,17 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
     if (ctx.chat.type === 'private' && !StringUtils.TextInclude(text, ['/'])) {
       Logger.info(`private: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
-      return ctx.reply('🤖', { reply_to_message_id: ctx.message.message_id })
+      // return ctx.reply('🤖', { reply_to_message_id: ctx.message.message_id })
+
+      const random_choice = await response(ctx, input, username)
+      if (!random_choice) return next()
+
+      const history = HistoryUtils.build_gpt_history(input, random_choice, username)
+      HistoryUtils.write_history(history)
+
+      return ctx.replyFmt(fmt`${italic(random_choice)}`, {
+        reply_to_message_id: ctx.message.message_id,
+      })
     }
   } catch (error) {
     Logger.error(error, 'gpt.middleware')

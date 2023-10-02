@@ -29,7 +29,7 @@ class LlamaPlugin {
     //   )
 
     const prompt = StringUtils.RemoveBreakLines(temp_main + history + text + `Winx(${username}):||`)
-    const data = { prompt, n_predict: 64, temperature: 1.5, stop: ['||'] }
+    const data = { prompt, n_predict: 256, temperature: 1, stop: ['||'] }
     try {
       if (StringUtils.CountTokens(prompt) > 2048) {
         Logger.error('tokens limit exceeded!', 'ai.complete')

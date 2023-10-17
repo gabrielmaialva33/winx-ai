@@ -16,17 +16,17 @@ const response = async (ctx: MyContext, input: any, username: string) => {
 
   await ctx.api.sendChatAction(ctx.chat.id, 'typing')
 
-  //const response = await IA.complete(input, username)
-  const response = await LlamaPlugin.generate(input, username)
-  return response
-  //console.log(response)
-  // // @ts-ignore
-  // if (response['choices'].length === 0) return null
-  //
-  // // @ts-ignore
-  // const choices = response['choices']
-  // const random = Math.floor(Math.random() * choices.length)
-  // return choices[random].text
+  const response = await IA.complete(input, username)
+  // const response = await LlamaPlugin.generate(input, username)
+  // return response
+
+  // @ts-ignore
+  if (response['choices'].length === 0) return null
+
+  // @ts-ignore
+  const choices = response['choices']
+  const random = Math.floor(Math.random() * choices.length)
+  return choices[random].text
 }
 
 export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {

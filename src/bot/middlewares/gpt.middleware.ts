@@ -40,6 +40,28 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
 
     const input = GptUtils.build_input({ text, username, reply_to_username, reply_to_text })
 
+    /**
+     * if the message in private and does not include '/'
+     */
+    if (ctx.chat.type === 'private' && !StringUtils.TextInclude(text, ['/'])) {
+      Logger.info(`private: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
+
+      return ctx.reply('🤖', { reply_to_message_id: ctx.message.message_id })
+
+      // const random_choice = await response(ctx, input, username)
+      // if (!random_choice) return next()
+      //
+      // const history = HistoryUtils.build_gpt_history(input, random_choice, username)
+      // HistoryUtils.write_history(history)
+      //
+      // return ctx.replyFmt(fmt`${italic(random_choice)}`, {
+      //   reply_to_message_id: ctx.message.message_id,
+      // })
+    }
+
+    /**
+     * if the message includes the word 'winx' and does not include '/'
+     */
     if (StringUtils.TextInclude(text, ['winx']) && !StringUtils.TextInclude(text, ['/'])) {
       Logger.debug(`winx detected: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
@@ -55,9 +77,11 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       })
     }
 
+    /**
+     * if the message is a reply to a message from the bot and does not include '/'
+     */
     if (
       ctx.message.reply_to_message?.from?.id === ctx.me.id &&
-      ctx.chat.type !== 'private' &&
       !StringUtils.TextInclude(text, ['/'])
     ) {
       Logger.debug(`bot replied: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
@@ -85,22 +109,6 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       return ctx.replyFmt(fmt`${italic(random_choice)}`, {
         reply_to_message_id: ctx.message.message_id,
       })
-    }
-
-    if (ctx.chat.type === 'private' && !StringUtils.TextInclude(text, ['/'])) {
-      Logger.info(`private: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
-
-      return ctx.reply('🤖', { reply_to_message_id: ctx.message.message_id })
-
-      // const random_choice = await response(ctx, input, username)
-      // if (!random_choice) return next()
-      //
-      // const history = HistoryUtils.build_gpt_history(input, random_choice, username)
-      // HistoryUtils.write_history(history)
-      //
-      // return ctx.replyFmt(fmt`${italic(random_choice)}`, {
-      //   reply_to_message_id: ctx.message.message_id,
-      // })
     }
   } catch (error) {
     Logger.error(error, 'gpt.middleware')

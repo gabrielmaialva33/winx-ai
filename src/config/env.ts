@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import * as process from 'process'
 
 import { bool, cleanEnv, num, str } from 'envalid'
 
@@ -26,13 +27,7 @@ export const Env = cleanEnv(process.env, {
   GROUP_ID: str({
     desc: 'Telegram Groups ID (separated by comma)',
     example: '-1001234567890,-1000987654321',
-  }),
-  DB_DEBUG: bool({
-    desc: 'Enable Knex Debug',
-    default: false,
-    docs: 'https://knexjs.org/#Installation-debug',
-    example: 'true',
-  }),
+  })
 })
 
 export default Env

@@ -36,31 +36,3 @@ export const Logger = {
     Log.debug(message, context)
   },
 }
-
-export const LogKnex = {
-  debug: (message: any) => {
-    if (Array.isArray(message)) {
-      message.forEach((item) => {
-        Logger.debug(StringUtils.FormatQuery(item.sql), 'Knex-Query')
-        Logger.debug(StringUtils.FormatBindings(item.bindings), 'Knex-Bindings')
-      })
-      return
-    }
-
-    Logger.debug(StringUtils.FormatQuery(message.sql), 'Knex-Query')
-    Logger.debug(StringUtils.FormatBindings(message.bindings), 'Knex-Bindings')
-  },
-
-  error: (message: any) => {
-    if (Array.isArray(message)) {
-      message.forEach((item) => {
-        Logger.error(StringUtils.FormatQuery(item.sql), 'Knex-Query')
-        Logger.error(StringUtils.FormatBindings(item.bindings), 'Knex-Bindings')
-      })
-      return
-    }
-    Logger.error(StringUtils.FormatQuery(message.sql), 'Knex-Query')
-    Logger.error(StringUtils.FormatBindings(message.bindings), 'Knex-Bindings')
-  },
-  enableColors: true,
-}

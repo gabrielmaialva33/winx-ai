@@ -1,12 +1,10 @@
 import { Winx } from '@/bot/core/bot'
 import { UserBot } from '@/bot/core/user.bot'
 import { Logger } from '@/helpers/logger.utils'
-import { Knex } from '@/lib/objection'
 import * as fs from 'fs'
 
 const User = new UserBot()
 
-Knex.migrate.latest().then(() => Logger.info('database migrated', 'knex.migrate'))
 Winx.start().then(() => Logger.info('bot started', 'start.bot'))
 
 User.start()

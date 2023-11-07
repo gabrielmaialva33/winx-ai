@@ -22,8 +22,6 @@ composer.command('imagine', async (ctx) => {
     if (!['group', 'supergroup'].includes(ctx.chat.type)) return
 
     const response = await IA.imagine(StringUtils.RemoveBreakLines(text))
-    if (response.created !== 1)
-      return ctx.reply('cannot generate image', { reply_to_message_id: ctx.message?.message_id })
 
     await ctx.api.sendChatAction(ctx.chat?.id, 'upload_photo')
 

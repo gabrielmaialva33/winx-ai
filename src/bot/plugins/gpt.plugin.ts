@@ -19,7 +19,7 @@ export class AI extends OpenAI {
     temperature: 0.8,
     max_tokens: 256,
     frequency_penalty: 0.5,
-    presence_penalty: 0.4,
+    presence_penalty: 0.3,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

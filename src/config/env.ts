@@ -16,6 +16,10 @@ export const Env = cleanEnv(process.env, {
     desc: 'Telegram Bot Token',
     example: '1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   }),
+  BOT_USER_ID: num({
+    desc: 'Telegram Bot User ID',
+    example: '5635583594',
+  }),
   STRING_SESSION: str({
     desc: 'Telegram String Session',
   }),
@@ -27,7 +31,7 @@ export const Env = cleanEnv(process.env, {
   GROUP_ID: str({
     desc: 'Telegram Groups ID (separated by comma)',
     example: '-1001234567890,-1000987654321',
-  })
+  }),
 })
 
 export default Env

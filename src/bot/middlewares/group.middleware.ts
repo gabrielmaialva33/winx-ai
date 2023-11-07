@@ -12,7 +12,9 @@ export const group: MiddlewareFn = async (ctx, next) => {
       const member = await ctx.getChatMember(ctx.me.id)
       if (member) {
         await ctx.reply(
-          'Desculpa, mas eu só falo no grupo Club das Winx! 🥺 🌸 Fale com o @mrootx para me adicionar em outro grupo.'
+          `Desculpa, mas eu só falo no grupo Club das Winx! 🥺 🌸 Fale com o @mrootx para me adicionar em outro grupo. 🤖
+            Seu ID: ${groupId}
+          `
         )
         await ctx.leaveChat()
         Logger.info(`Bot left chat ${groupId}`, 'group.middleware')

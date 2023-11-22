@@ -69,6 +69,7 @@ export class AI extends OpenAI {
       n: n || 1,
       size: '512x512',
       response_format: 'url',
+      model: 'dall-e-2',
     })
   }
 

@@ -16,10 +16,10 @@ export class AI extends OpenAI {
   private config = {
     model: 'gpt-3.5-turbo-instruct',
     //model: 'text-davinci-003',
-    temperature: 0.9,
+    temperature: 0.8,
     max_tokens: 256,
     frequency_penalty: 0.2,
-    presence_penalty: 0.1,
+    presence_penalty: 0.2,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

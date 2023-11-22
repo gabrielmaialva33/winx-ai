@@ -14,12 +14,12 @@ import { CompletionCreateParamsBase } from 'openai/src/resources/completions'
 
 export class AI extends OpenAI {
   private config = {
-    model: 'gpt-3.5-turbo-instruct',
-    //model: 'text-davinci-003',
-    temperature: 0.8,
+    //model: 'gpt-3.5-turbo-instruct',
+    model: 'text-davinci-002',
+    temperature: 1,
     max_tokens: 256,
-    frequency_penalty: 0.5,
-    presence_penalty: 0.4,
+    frequency_penalty: 0.9,
+    presence_penalty: 0.7,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

@@ -67,9 +67,9 @@ export class AI extends OpenAI {
     return this.images.generate({
       prompt: text,
       n: n || 1,
-      size: '512x512',
+      size: '1024x1024',
       response_format: 'url',
-      model: 'dall-e-2',
+      model: 'dall-e-3',
     })
   }
 

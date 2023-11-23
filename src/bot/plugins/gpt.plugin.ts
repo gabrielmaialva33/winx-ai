@@ -18,8 +18,8 @@ export class AI extends OpenAI {
     model: 'text-davinci-002',
     temperature: 1,
     max_tokens: 128,
-    frequency_penalty: 0.4,
-    presence_penalty: 0.3,
+    frequency_penalty: 1.2,
+    presence_penalty: 0.9,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

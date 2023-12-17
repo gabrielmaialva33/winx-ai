@@ -69,39 +69,4 @@ composer.command('variation', async (ctx) => {
   }
 })
 
-composer.command('gpt4', async (ctx) => {
-  const text = StringUtils.RemoveIncludes(ctx.message!.text, [
-    '/gpt4',
-    '/gpt4@winx_ia_bot',
-    'gpt4',
-    '@winx_ia_bot',
-    'winx_ia_bot',
-    '/gpt4@winx_ia_bot',
-  ])
-  if (!text) return
-  if (!['group', 'supergroup'].includes(ctx.chat.type)) return
-
-  await ctx.api.sendChatAction(ctx.chat?.id, 'typing')
-
-  const response = await IA.gpt4(StringUtils.RemoveBreakLines(text))
-
-  if (!response.choices[0].message || !response.choices[0].message.content)
-    return ctx.reply('no text found', { reply_to_message_id: ctx.message?.message_id })
-
-  if (response.choices[0].message.content.includes('```')) {
-    Logger.info('sending code', 'gpt.command')
-
-    const beforeContent = response.choices[0].message.content.split('```')[0]
-    const codeContent = response.choices[0].message.content.split('```')[1]
-    const afterContent = response.choices[0].message.content.split('```')[2]
-
-    return ctx.replyFmt(fmt`${beforeContent}${code(codeContent)}${afterContent}`, {
-      reply_to_message_id: ctx.message?.message_id,
-    })
-  } else
-    return ctx.reply(response.choices[0].message.content, {
-      reply_to_message_id: ctx.message?.message_id,
-    })
-})
-
 export default composer

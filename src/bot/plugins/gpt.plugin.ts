@@ -17,9 +17,9 @@ export class AI extends OpenAI {
     model: 'gpt-3.5-turbo-instruct',
     //model: 'text-davinci-002',
     temperature: 0.8,
-    max_tokens: 256,
-    frequency_penalty: 0.5,
-    presence_penalty: 0.7,
+    max_tokens: 128,
+    frequency_penalty: 0.1,
+    presence_penalty: 0.2,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

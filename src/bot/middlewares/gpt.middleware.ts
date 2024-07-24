@@ -97,7 +97,7 @@ export const gpt: MiddlewareFn<MyContext> = async (ctx, next) => {
       })
     }
 
-    if (Math.random() < 0.01 && !StringUtils.TextInclude(text, ['/'])) {
+    if (Math.random() < 0.1 && !StringUtils.TextInclude(text, ['/'])) {
       Logger.debug(`random: ${ContextUtils.get_username(ctx)}`, 'gpt.middleware')
 
       const random_choice = await response(ctx, input, username)

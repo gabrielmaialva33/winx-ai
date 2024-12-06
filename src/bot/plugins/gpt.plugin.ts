@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as process from 'process'
-import jimp from 'jimp'
+import { Jimp } from 'jimp'
 import { DateTime } from 'luxon'
 
 import { OpenAI } from 'openai'
@@ -76,10 +76,15 @@ export class AI extends OpenAI {
   //
   public async variation(path: string) {
     const file = await fs.promises.readFile(path)
-    await jimp.read(file).then((image) => image.writeAsync(`${path}.png`))
+    await Jimp.read(file).then((image) => image.getBuffer('image/png', { path: `${path}.png` }))
 
-    const image = await jimp.read(`${path}.png`)
-    await image.resize(512, 512).writeAsync(`${path}.png`)
+    const image = await Jimp.read(file)
+    await image
+      .resize({
+        h: 512,
+        w: 512,
+      })
+      .getBuffer('image/png', { path: `${path}.png` })
 
     Logger.info(`variation image: ${path}.png`, 'ai.variation')
 
